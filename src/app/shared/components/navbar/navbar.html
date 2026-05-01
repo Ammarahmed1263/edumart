@@ -1,0 +1,24 @@
+<div class="container">
+    <nav class="navbar">
+        <div class="nav-brand">
+            <a routerLink="/">Edu<span>Mart</span></a>
+        </div>
+
+        <div class="nav-links">
+            <!-- Links visible to EVERYONE -->
+            <a routerLink="/courses" routerLinkActive="active">Courses</a>
+
+            <!-- Links visible ONLY if logged in -->
+            @if(currentUser().token) {
+            <a routerLink="/my-courses" routerLinkActive="active">My Courses</a>
+            <a routerLink="/cart" routerLinkActive="active">Cart</a>
+            <button class="logout-btn" (click)="logout()">Logout</button>
+            }
+            <!-- Links visible ONLY if NOT logged in -->
+            @else {
+            <a routerLink="/login" routerLinkActive="active">Login</a>
+            <a routerLink="/register" class="register-btn" routerLinkActive="active">Register</a>
+            }
+        </div>
+    </nav>
+</div>
