@@ -1,0 +1,131 @@
+:host {
+    display: block;
+    width: 100%;
+    height: 100vh;
+    font-family: 'Outfit', sans-serif;
+}
+
+.not-found-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f8fafc;
+    position: relative;
+    overflow: hidden;
+}
+
+.not-found-content {
+    text-align: center;
+    z-index: 2;
+    padding: 2rem;
+    max-width: 500px;
+}
+
+.error-code {
+    font-size: 10rem;
+    font-weight: 800;
+    line-height: 1;
+    color: #0d5ef4;
+    opacity: 0.1;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    user-select: none;
+}
+
+.illustration svg {
+    width: 120px;
+    height: 120px;
+    color: #0d5ef4;
+    margin-bottom: 2rem;
+    animation: float 3s ease-in-out infinite;
+}
+
+h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #1e293b;
+    margin-bottom: 1rem;
+}
+
+p {
+    font-size: 1.1rem;
+    color: #64748b;
+    line-height: 1.6;
+    margin-bottom: 2.5rem;
+}
+
+.back-home-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #0d5ef4;
+    color: white;
+    padding: 1rem 2.5rem;
+    border-radius: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 25px rgba(13, 94, 244, 0.25);
+}
+
+.back-home-btn:hover {
+    background-color: #0b51d4;
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(13, 94, 244, 0.35);
+}
+
+.back-home-btn svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* Background Shapes */
+.bg-shape {
+    position: absolute;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #0d5ef4, #3b82f6);
+    filter: blur(80px);
+    opacity: 0.05;
+    z-index: 1;
+}
+
+.shape-1 {
+    width: 400px;
+    height: 400px;
+    top: -100px;
+    right: -100px;
+}
+
+.shape-2 {
+    width: 300px;
+    height: 300px;
+    bottom: -50px;
+    left: -50px;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-15px);
+    }
+}
+
+@media (max-width: 640px) {
+    .error-code {
+        font-size: 6rem;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+}
