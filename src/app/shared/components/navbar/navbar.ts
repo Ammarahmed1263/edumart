@@ -11,7 +11,6 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   styleUrl: './navbar.css',
 })
 export class Navbar {
-  // Inject the service
   private authService = inject(AuthService);
   private router = inject(Router);
   
@@ -26,7 +25,6 @@ export class Navbar {
     }
   }
 
-  // Expose the signal to the template so it updates automatically!
   currentUser = this.authService.currentUser;
 
   logout() {

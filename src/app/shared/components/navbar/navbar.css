@@ -1,11 +1,13 @@
-@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=DM+Sans:wght@400;500;600&display=swap');
-
 :host {
   display: block;
   width: 100%;
   position: sticky;
   top: 0;
   z-index: 1000;
+}
+
+.header-wrapper{
+  background-color: var(--main-bg-color);
 }
 
 .container {
@@ -46,18 +48,16 @@
 
 .nav-brand {
   font-family: 'Bricolage Grotesque', sans-serif;
-  font-size: 1.6rem;
-  font-weight: 700;
+  font-size: 1.8rem;
+  font-weight: 800;
   color: var(--text-gray-1000);
   text-decoration: none;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
 }
 
 .nav-brand span {
-  color: var(--text-gray-600);
-  font-weight: 500;
+  color: var(--primary-400);
 }
 
 .nav-links,
