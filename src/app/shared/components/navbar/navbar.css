@@ -1,131 +1,128 @@
 :host {
-    display: block;
-    width: 100%;
-    font-family: 'Outfit', sans-serif;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
+  display: block;
+  width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.header-wrapper{
+  background-color: var(--main-bg-color);
 }
 
 .container {
-    width: 100%;
-    background: #0d5ef4;
-    box-shadow: 0 4px 20px rgba(13, 94, 244, 0.2);
+  width: 100%;
+  background: var(--main-bg-color);
+  box-shadow: 0 20px 40px rgba(13, 94, 244, 0.05);
 }
 
 .navbar {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 75px;
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
 }
 
-.nav-brand a {
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: #ffffff;
-    text-decoration: none;
-    letter-spacing: -0.5px;
-    transition: transform 0.3s ease;
-    display: flex;
-    align-items: center;
+.scroll-progress-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: rgba(0, 0, 0, 0.05);
+  z-index: 100;
 }
 
-.nav-brand a span {
-    color: rgba(255, 255, 255, 0.7);
-    font-weight: 500;
+.scroll-progress-bar {
+  height: 100%;
+  background: linear-gradient(to right, var(--primary-400), var(--primary-600));
+  width: 0;
+  transition: width 0.1s ease-out;
+  box-shadow: 0 0 10px rgba(var(--primary-rgb), 0.3);
 }
 
-.nav-brand a:hover {
-    transform: scale(1.02);
+.nav-brand {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--text-gray-1000);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
 }
 
-.nav-links {
-    display: flex;
-    align-items: center;
-    gap: 2.5rem;
+.nav-brand span {
+  color: var(--primary-400);
 }
 
-.nav-links a {
-    text-decoration: none;
-    color: rgba(255, 255, 255, 0.85);
-    font-weight: 500;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-    position: relative;
-    padding: 0.5rem;
-    cursor: pointer;
+.nav-links,
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
 
-.nav-links a:not(.register-btn):hover,
+.nav-links a,
+.nav-actions a {
+  
+  text-decoration: none;
+  color: var(--text-gray-600);
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: color 0.2s ease;
+}
+
+.nav-links a:hover,
+.nav-actions a:hover,
+.nav-actions a.active,
 .nav-links a.active {
-    color: #ffffff;
+  color: var(--primary-500);
 }
 
-.nav-links a:not(.register-btn)::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: #ffffff;
-    transition: width 0.3s ease;
-    border-radius: 2px;
+.btn-solid,
+.btn-outline {
+  
+  font-weight: 600;
+  border-radius: 12px;
+  padding: 10px 18px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
-.nav-links a:not(.register-btn):hover::after,
-.nav-links a.active::after {
-    width: 100%;
+.btn-solid {
+  background: #ffffff;
+  color: var(--primary-700) !important;
+  box-shadow: 0 12px 22px rgba(15, 34, 57, 0.18);
 }
 
-.register-btn {
-    background: #ffffff;
-    color: #0d5ef4 !important;
-    padding: 0.7rem 1.8rem;
-    border-radius: 12px;
-    font-weight: 600;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease !important;
+.btn-outline {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.4);
 }
 
-.register-btn:hover {
-    background: rgba(255, 255, 255, 0.9);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+.btn-solid:hover,
+.btn-outline:hover {
+  transform: translateY(-1px);
 }
 
-.logout-btn {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1.5px solid rgba(255, 255, 255, 0.3);
-    color: #ffffff;
-    padding: 0.6rem 1.4rem;
-    border-radius: 10px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-family: inherit;
+@media (max-width: 900px) {
+  .nav-links {
+    display: none;
+  }
 }
 
-.logout-btn:hover {
-    background: rgba(255, 255, 255, 0.2);
-    border-color: #ffffff;
-}
-
-/* Mobile responsive */
-@media (max-width: 768px) {
-    .navbar {
-        padding: 0 1.5rem;
-    }
-
-    .nav-links {
-        gap: 1.2rem;
-    }
-
-    .nav-links a:not(.register-btn) {
-        display: none;
-    }
+@media (max-width: 640px) {
+  .nav-actions a:not(.btn-solid),
+  .nav-actions button {
+    display: none;
+  }
 }

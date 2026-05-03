@@ -1,4 +1,5 @@
 <div class="login-container">
+
   <a routerLink="/" class="home-btn">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
@@ -7,89 +8,8 @@
     <span>Home</span>
   </a>
 
-  <!-- Left Panel: Content -->
-  <div class="content">
-
-    <!-- Brand -->
-    <div class="content-brand">
-      <div class="brand-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M12 2L2 7l10 5 10-5-10-5z" />
-          <path d="M2 17l10 5 10-5" />
-          <path d="M2 12l10 5 10-5" />
-        </svg>
-      </div>
-      <span class="brand-name">EduMart</span>
-    </div>
-
-    <!-- Hero text -->
-    <div class="content-hero">
-      <h1>Learn Without
-        <span class="hero-highlight">Limits.</span>
-      </h1>
-      <p>Join millions of learners unlocking world-class courses, mentors, and certifications — all in one place.</p>
-    </div>
-
-    <!-- Stats row -->
-    <div class="content-stats">
-      <div class="stat-item">
-        <span class="stat-number">50K+</span>
-        <span class="stat-label">Courses</span>
-      </div>
-      <div class="stat-divider"></div>
-      <div class="stat-item">
-        <span class="stat-number">2M+</span>
-        <span class="stat-label">Learners</span>
-      </div>
-      <div class="stat-divider"></div>
-      <div class="stat-item">
-        <span class="stat-number">98%</span>
-        <span class="stat-label">Satisfaction</span>
-      </div>
-    </div>
-
-    <!-- Testimonial card -->
-    <div class="content-testimonial">
-      <div class="testimonial-avatar">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-          <path
-            d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z" />
-        </svg>
-      </div>
-      <div class="testimonial-body">
-        <p class="testimonial-quote">"EduMart helped me land my dream job in just 6 months. The courses are incredibly
-          practical!"</p>
-        <span class="testimonial-author">Sara M. — Software Engineer at Google</span>
-      </div>
-    </div>
-
-    <!-- Feature pills -->
-    <div class="content-pills">
-      <span class="pill">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-          <polyline points="22 4 12 14.01 9 11.01" />
-        </svg>
-        Expert Instructors
-      </span>
-      <span class="pill">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="2" y="3" width="20" height="14" rx="2" />
-          <line x1="8" y1="21" x2="16" y2="21" />
-          <line x1="12" y1="17" x2="12" y2="21" />
-        </svg>
-        Learn at Your Pace
-      </span>
-      <span class="pill">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="8" r="6" />
-          <path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11" />
-        </svg>
-        Verified Certificates
-      </span>
-    </div>
-
-  </div>
+  <!-- Left Panel -->
+  <app-auth-hero></app-auth-hero>
 
   <!-- Right Panel: Form -->
   <div class="divForm">
@@ -125,7 +45,7 @@
       </div>
 
       <!-- Password -->
-      <div class="form-group">
+      <div class="form-group passwordd">
         <label for="password">Password</label>
         <div class="input-wrapper">
           <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
@@ -133,16 +53,43 @@
             <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
             <path d="M7 11V7a5 5 0 0 1 10 0v4" />
           </svg>
-          <input type="password" id="password" name="password" placeholder="••••••••" #password="ngModel"
-            [(ngModel)]="loginData.password" required autocomplete="current-password" minlength="6" maxlength="20"
-            pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$">
+          <input [type]="showPassword ? 'text' : 'password'" id="password" name="password" placeholder="••••••••"
+            #password="ngModel" [(ngModel)]="loginData.password" required autocomplete="current-password" minlength="6"
+            maxlength="20">
+
+          <button type="button" class="toggle-password" (click)="togglePassword()">
+            @if(showPassword){
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+              stroke="currentColor" class="size-6" width="14" height="14">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+            </svg>
+            }@else {<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+              stroke="currentColor" class="size-6" width="14" height="14">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88" />
+            </svg>
+            }
+
+          </button>
         </div>
-        @if(password.invalid && password.touched){
+
+        <!-- Validation of Password -->
+        @if(password.touched && password.errors?.['required']){
         <span class="field-hint error">Password is required</span>
         }
-        @if(password.invalid && password.dirty && password.errors?.['minlength']){
-        <span class="field-hint error">Password Too Short(Minimum 6 characters required)</span>
+
+        @if(password.touched && password.errors?.['minlength']){
+        <span class="field-hint error">
+          Password is too short (minimum 6 characters)
+        </span>
         }
+
+
+
+
+        <!-- End Validation -->
       </div>
 
       <!-- Forgot -->
@@ -150,10 +97,9 @@
         <a href="#" class="forgot-link">Forgot password?</a>
       </div>
 
-      <!-- Submit Button -->
-      <button type="submit" [disabled]="loginForm.invalid || isLoading()">
-        {{ isLoading() ? 'Logging in...' : 'Login' }}
-      </button>
+
+      <app-button defaultText="Login" loadingText="Logging in..." [isLoading]="isLoading()"
+        [isDisabled]="loginForm.invalid || isLoading()" [isValid]="loginForm.valid"></app-button>
 
       <!-- Error Alert -->
       @if(errorMessage()){

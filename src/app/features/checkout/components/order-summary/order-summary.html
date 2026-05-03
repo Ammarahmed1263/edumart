@@ -1,0 +1,36 @@
+<div class="summary-card">
+  <div class="summary-row">
+    <span class="summary-label">Subtotal</span>
+    <span class="summary-value">{{ total() | currency: 'EGP' }}</span>
+  </div>
+  <div class="summary-row">
+    <span class="summary-label">Discount</span>
+    <span class="summary-value discount">EGP 0</span>
+  </div>
+  <div class="summary-row total-row">
+    <span class="summary-label">Grand total</span>
+    <span class="summary-value total">{{ total() | currency: 'EGP' }}</span>
+  </div>
+
+  @if (status() === 'error') {
+    <div class="error-banner">Payment initiation failed. Please try again.</div>
+  }
+
+  <button
+    id="pay-now"
+    type="button"
+    class="checkout-btn"
+    (click)="onCheckout()"
+    [disabled]="status() === 'creating'"
+  >
+    @if (status() === 'creating') {
+      Processing...
+    } @else {
+      Checkout now
+    }
+  </button>
+
+  <button type="button" class="continue-btn" (click)="onBack()">
+    Continue shopping
+  </button>
+</div>

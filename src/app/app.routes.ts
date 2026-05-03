@@ -3,31 +3,45 @@ import { Layout } from './shared/components/layout/layout';
 import { Login } from './features/auth/login/login';
 import { Register } from './features/auth/register/register';
 import { NotFound } from './shared/components/not-found/not-found';
-export const routes: Routes = [
+import { authGuard } from './core/guards/auth.guard';
+import { guestGuard } from './core/guards/guest.guard';
+import { HomePage } from './pages/home/home';
 
-    { path: 'login', component: Login },
-    { path: 'register', component: Register },
+export const routes: Routes = [
+    { path: 'login', canActivate: [guestGuard], component: Login },
+    { path: 'register', canActivate: [guestGuard], component: Register },
     {
         path: '',
         component: Layout,
         children: [
-            // Members 2, 3, and 4 will uncomment these later:
-
-            { path: 'courses', loadComponent: () => import('./features/courses/courses.component').then(c => c.CoursesComponent) },
+            { path: '', pathMatch: 'full', component: HomePage },
             {
-                path: 'courses/:id',
-                loadComponent: () =>
-                    import('./features/course-detail/course-detail.component').then(
-                        c => c.CourseDetailComponent
-                    ),
+                path: 'courses',
+                loadComponent: () => import('./features/courses/courses').then((c) => c.Courses),
             },
-            /*
-            { path: 'cart', canActivate: [authGuard], loadComponent: () => import('./features/cart/cart.component').then(c => c.CartComponent) },
-            { path: 'checkout', canActivate: [authGuard], loadComponent: () => import('./features/checkout/checkout.component').then(c => c.CheckoutComponent) },
-            { path: 'my-courses', canActivate: [authGuard], loadComponent: () => import('./features/my-courses/my-courses.component').then(c => c.MyCoursesComponent) },
-            */
-            { path: '**', component: NotFound },
-        ]
-    },
+            {
+                path: 'checkout',
+                canActivate: [authGuard],
+                loadComponent: () => import('./features/checkout/checkout/checkout').then((c) => c.Checkout),
+            },
+            {
+                path: 'checkout/success',
+                canActivate: [authGuard],
+                loadComponent: () => import('./features/checkout/success/success').then((c) => c.Success),
+            },
+            {
+                path: 'checkout/cancel',
+                canActivate: [authGuard],
+                loadComponent: () =>
+                    import('./features/checkout/cancel/cancel').then((c) => c.Cancel),
+            },
+            {
+                path: 'my-courses',
+                canActivate: [authGuard],
+                loadComponent: () => import('./features/my-courses/my-courses').then((c) => c.MyCourses),
+            },
 
+            { path: '**', component: NotFound },
+        ],
+    },
 ];

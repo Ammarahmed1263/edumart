@@ -1,0 +1,18 @@
+<div class="item-row">
+  <input type="checkbox" class="item-checkbox" [attr.aria-label]="'Select ' + item().title" />
+  <div class="product-cell">
+    <div class="product-image">
+      <img [src]="item().image" [alt]="item().title" class="course-image" />
+    </div>
+    <div class="product-info">
+      <h3 class="product-name">{{ item().title }}</h3>
+      <p class="product-details">Course</p>
+    </div>
+  </div>
+  <div class="price-cell">
+    {{ item().price | currency: 'EGP' }}
+  </div>
+  <div class="action-cell">
+    <button type="button" class="remove-btn" (click)="onRemove()">Remove</button>
+  </div>
+</div>
