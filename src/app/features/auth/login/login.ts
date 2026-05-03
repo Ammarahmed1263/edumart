@@ -31,9 +31,9 @@ export class Login {
     this.authService.login(this.loginData).subscribe({
       next: (data) => {
         console.log('the data isssss', data);
-        this.isLoading.set(true);
+        this.isLoading.set(false);
         this.errorMessage.set(null);
-        this.router.createUrlTree(['/home']);
+        this.router.navigate(['/']);
       },
       error: (err) => {
         console.log('error form login', err);
