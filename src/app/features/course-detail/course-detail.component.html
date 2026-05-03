@@ -1,0 +1,115 @@
+<section class="course-detail-page">
+    <a class="back-link" routerLink="/courses">← Back to Courses</a>
+
+    @if (successMessage()) {
+    <div class="success-message">
+        {{ successMessage() }}
+    </div>
+    }
+
+    @if (errorMessage()) {
+    <div class="error-message">
+        {{ errorMessage() }}
+    </div>
+    }
+
+    @if (isLoading()) {
+    <div class="loading-state">
+        Loading course details...
+    </div>
+    } @else {
+    @if (course()) {
+    <div class="course-hero">
+        <div class="course-image-wrapper">
+            <img class="course-image" [src]="getCourseImage(course()!)" [alt]="course()!.title" />
+        </div>
+
+        <div class="course-info">
+            <p class="course-category">
+                {{ course()!.category.name }}
+            </p>
+
+            <h1>{{ course()!.title }}</h1>
+
+            <p class="course-description">
+                {{ course()!.description }}
+            </p>
+
+            <div class="course-meta">
+                <p>
+                    <span>Instructor</span>
+                    <strong>{{ course()!.instructor.userName }}</strong>
+                </p>
+
+                <p>
+                    <span>Price</span>
+                    <strong>{{ course()!.price | currency }}</strong>
+                </p>
+            </div>
+
+            <div class="course-actions">
+                <button class="add-btn" [class.added]="isCourseInCart()" (click)="addToCart()">
+                    @if (isCourseInCart()) {
+                    Already in Cart
+                    } @else {
+                    Add to Cart
+                    }
+                </button>
+
+                <a class="cart-btn" routerLink="/cart">
+                    Go to Cart
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="details-grid">
+        <section class="details-card">
+            <h2>Lessons Preview</h2>
+
+            @if (lessons().length > 0) {
+            <div class="lessons-list">
+                @for (lesson of lessons(); track lesson._id; let index = $index) {
+                <div class="lesson-item">
+                    <span class="lesson-number">{{ index + 1 }}</span>
+
+                    <div>
+                        <h3>{{ lesson.title }}</h3>
+                        <p>Preview lesson</p>
+                    </div>
+                </div>
+                }
+            </div>
+            } @else {
+            <p class="muted-text">
+                {{ lessonsMessage() || 'No lessons available yet.' }}
+            </p>
+            }
+        </section>
+
+        <section class="details-card">
+            <h2>Reviews</h2>
+
+            @if (reviews().length > 0) {
+            <div class="reviews-list">
+                @for (review of reviews(); track review._id) {
+                <div class="review-item">
+                    <div class="review-header">
+                        <strong>{{ review.student.userName }}</strong>
+                        <span>{{ review.rating }}/5</span>
+                    </div>
+
+                    <p>{{ review.comment }}</p>
+                </div>
+                }
+            </div>
+            } @else {
+            <p class="muted-text">
+                No reviews yet.
+            </p>
+            }
+        </section>
+    </div>
+    }
+    }
+</section>

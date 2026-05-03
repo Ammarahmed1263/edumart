@@ -14,6 +14,13 @@ export const routes: Routes = [
             // Members 2, 3, and 4 will uncomment these later:
 
             { path: 'courses', loadComponent: () => import('./features/courses/courses.component').then(c => c.CoursesComponent) },
+            {
+                path: 'courses/:id',
+                loadComponent: () =>
+                    import('./features/course-detail/course-detail.component').then(
+                        c => c.CourseDetailComponent
+                    ),
+            },
             /*
             { path: 'cart', canActivate: [authGuard], loadComponent: () => import('./features/cart/cart.component').then(c => c.CartComponent) },
             { path: 'checkout', canActivate: [authGuard], loadComponent: () => import('./features/checkout/checkout.component').then(c => c.CheckoutComponent) },
