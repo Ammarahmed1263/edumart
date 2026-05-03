@@ -1,0 +1,9 @@
+<div class="home-card">
+  @for (product of products.items; track $index) {
+    <div class="order-row">
+      <div>{{ product.title }}</div>
+      <div>{{ product.price }} EGP</div>
+    </div>
+  }
+  <button type="button" class="primary" (click)="goToCheckout()">Buy (static)</button>
+</div>

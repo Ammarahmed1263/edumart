@@ -14,25 +14,31 @@
           "skipTests": true
         },
         "@schematics/angular:component": {
-          "skipTests": true
+          "skipTests": true,
+          "path": "src/app/components"
         },
         "@schematics/angular:directive": {
-          "skipTests": true
+          "skipTests": true,
+          "path": "src/app/directives"
         },
         "@schematics/angular:guard": {
-          "skipTests": true
+          "skipTests": true,
+          "path": "src/app/guards"
         },
         "@schematics/angular:interceptor": {
-          "skipTests": true
+          "skipTests": true,
+          "path": "src/app/interceptors"
         },
         "@schematics/angular:pipe": {
-          "skipTests": true
+          "skipTests": true,
+          "path": "src/app/pipes"
         },
         "@schematics/angular:resolver": {
           "skipTests": true
         },
         "@schematics/angular:service": {
-          "skipTests": true
+          "skipTests": true,
+          "path": "src/app/services"
         }
       },
       "root": "",
@@ -92,6 +98,9 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
+          "options": {
+            "port": 4200
+          },
           "configurations": {
             "production": {
               "buildTarget": "edumart:build:production"
