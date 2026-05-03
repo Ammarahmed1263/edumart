@@ -7,95 +7,7 @@
         <span>Home</span>
     </a>
 
-    <!-- Left Panel: Content -->
-    <div class="content">
-
-        <!-- Brand -->
-        <div class="content-brand">
-            <div class="brand-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                    stroke-width="2">
-                    <path d="M12 2L2 7l10 5 10-5-10-5z" />
-                    <path d="M2 17l10 5 10-5" />
-                    <path d="M2 12l10 5 10-5" />
-                </svg>
-            </div>
-            <span class="brand-name">EduMart</span>
-        </div>
-
-        <!-- Hero text -->
-        <div class="content-hero">
-            <h1>Learn Without
-                <span class="hero-highlight">Limits.</span>
-            </h1>
-            <p>Join millions of learners unlocking world-class courses, mentors, and certifications — all in one place.
-            </p>
-        </div>
-
-        <!-- Stats row -->
-        <div class="content-stats">
-            <div class="stat-item">
-                <span class="stat-number">50K+</span>
-                <span class="stat-label">Courses</span>
-            </div>
-            <div class="stat-divider"></div>
-            <div class="stat-item">
-                <span class="stat-number">2M+</span>
-                <span class="stat-label">Learners</span>
-            </div>
-            <div class="stat-divider"></div>
-            <div class="stat-item">
-                <span class="stat-number">98%</span>
-                <span class="stat-label">Satisfaction</span>
-            </div>
-        </div>
-
-        <!-- Testimonial card -->
-        <div class="content-testimonial">
-            <div class="testimonial-avatar">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                    <path
-                        d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z" />
-                </svg>
-            </div>
-            <div class="testimonial-body">
-                <p class="testimonial-quote">"EduMart helped me land my dream job in just 6 months. The courses are
-                    incredibly
-                    practical!"</p>
-                <span class="testimonial-author">Sara M. — Software Engineer at Google</span>
-            </div>
-        </div>
-
-        <!-- Feature pills -->
-        <div class="content-pills">
-            <span class="pill">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                    stroke-width="2">
-                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                    <polyline points="22 4 12 14.01 9 11.01" />
-                </svg>
-                Expert Instructors
-            </span>
-            <span class="pill">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                    stroke-width="2">
-                    <rect x="2" y="3" width="20" height="14" rx="2" />
-                    <line x1="8" y1="21" x2="16" y2="21" />
-                    <line x1="12" y1="17" x2="12" y2="21" />
-                </svg>
-                Learn at Your Pace
-            </span>
-            <span class="pill">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                    stroke-width="2">
-                    <circle cx="12" cy="8" r="6" />
-                    <path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11" />
-                </svg>
-                Verified Certificates
-            </span>
-        </div>
-
-    </div>
+    <app-auth-hero></app-auth-hero>
 
     <!-- Right Panel: Form -->
     <div class="divForm">
@@ -156,11 +68,19 @@
                     </svg>
                     <input type="password" id="password" placeholder="••••••••" formControlName="password">
                 </div>
+
                 <!-- Password Validation -->
                 @if(password?.invalid && (password?.dirty || password?.touched)) {
-                @if(password?.errors?.['required']) { <span class="field-hint error">Password is required</span> }
-                @if(password?.errors?.['minlength']) { <span class="field-hint error">Minimum 8 characters
-                    required</span> }
+                @if(password?.errors?.['required']) {
+                <span class="field-hint error">Password is required</span>
+                }
+                @if(password?.errors?.['minlength']) {
+                <span class="field-hint error">Minimum 8 characters required</span>
+                }
+                @if(password?.errors?.['pattern']) {
+                <span class="field-hint error">Must contain 1 uppercase, 1 lowercase, 1 number, and 1 special
+                    character</span>
+                }
                 }
             </div>
 
@@ -203,9 +123,9 @@
             }
 
             <!-- Submit Button -->
-            <button type="submit" [class.valid-btn]="registerForm.valid" [disabled]="isLoading()">
-                {{ isLoading() ? 'Registering...' : 'Register' }}
-            </button>
+            <app-button defaultText="Register" loadingText="Registering..." [isLoading]="isLoading()"
+                [isDisabled]="registerForm.invalid || isLoading()" [isValid]="registerForm.valid">
+            </app-button>
 
             <p class="register-prompt">Already have an account? <a routerLink="/login">Login</a></p>
 
