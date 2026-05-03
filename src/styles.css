@@ -1,4 +1,41 @@
 /* You can add global styles to this file, and also import other style files */
+:root {
+  /* PRIMARY */
+  --primary-50: #e7efff;
+  --primary-100: #c2d6ff;
+  --primary-200: #99bbff;
+  --primary-300: #709fff;
+  --primary-400: #4d88ff;
+  --primary-500: #0d5ef4; /* base */
+  --primary-600: #0b54db;
+  --primary-700: #0947bd;
+  --primary-800: #073a9e;
+  --primary-900: #052c80;
+
+  /* SECONDARY */
+  --secondary-50: #ffe8e8;
+  --secondary-100: #ffc5c5;
+  --secondary-200: #ffa0a0;
+  --secondary-300: #ff7a7a;
+  --secondary-400: #ff5c5c;
+  --secondary-500: #f20f10; /* base */
+  --secondary-600: #d60d0e;
+  --secondary-700: #b80b0c;
+  --secondary-800: #99090a;
+  --secondary-900: #7a0708;
+
+  --text-gray-50: #f5f7fa;
+  --text-gray-100: #e6e9ee;
+  --text-gray-200: #d1d6dd;
+  --text-gray-300: #b0b8c4;
+  --text-gray-400: #8a94a3;
+  --text-gray-500: #4d5765; /* base */
+  --text-gray-600: #3f4855;
+  --text-gray-700: #323a45;
+  --text-gray-800: #242c35;
+  --text-gray-900: #171d24;
+  --text-gray-1000: #0f2239; /* your custom */
+}
 body {
   font-family: 'Noto Sans', sans-serif;
   margin: 0;
