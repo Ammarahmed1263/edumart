@@ -6,6 +6,7 @@ import { NotFound } from './shared/components/not-found/not-found';
 import { authGuard } from './core/guards/auth.guard';
 import { guestGuard } from './core/guards/guest.guard';
 import { HomePage } from './pages/home/home';
+
 export const routes: Routes = [
   { path: 'login', canActivate: [guestGuard], component: Login },
   { path: 'register', canActivate: [guestGuard], component: Register },
@@ -13,20 +14,26 @@ export const routes: Routes = [
     path: '',
     component: Layout,
     children: [
-      { path: '', component: HomePage },
+      { path: '', pathMatch: 'full', component: HomePage },
       {
         path: 'courses',
         loadComponent: () => import('./features/courses/courses').then((c) => c.Courses),
       },
       {
-        path: 'cart',
-        canActivate: [authGuard],
-        loadComponent: () => import('./features/cart/cart').then((c) => c.Cart),
-      },
-      {
         path: 'checkout',
         canActivate: [authGuard],
-        loadComponent: () => import('./features/checkout/checkout').then((c) => c.Checkout),
+        loadComponent: () => import('./features/checkout/checkout/checkout').then((c) => c.Checkout),
+      },
+      {
+        path: 'checkout/success',
+        canActivate: [authGuard],
+        loadComponent: () => import('./features/checkout/success/success').then((c) => c.Success),
+      },
+      {
+        path: 'checkout/cancel',
+        canActivate: [authGuard],
+        loadComponent: () =>
+          import('./features/checkout/cancel/cancel').then((c) => c.Cancel),
       },
       {
         path: 'my-courses',
