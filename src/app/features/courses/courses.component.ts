@@ -9,7 +9,7 @@ import { CourseCardComponent } from '../../shared/components/course-card/course-
 @Component({
     selector: 'app-courses',
     standalone: true,
-    imports: [CurrencyPipe, RouterLink, CourseCardComponent],
+    imports: [CourseCardComponent],
     templateUrl: './courses.component.html',
     styleUrl: './courses.component.css',
 })
