@@ -1,0 +1,34 @@
+<article class="course-card">
+    <img class="course-image" [src]="getCourseImage()" [alt]="course.title" />
+
+    <div class="course-content">
+        <p class="course-category">
+            {{ course.category.name }}
+        </p>
+
+        <h2>{{ course.title }}</h2>
+
+        <p class="course-description">
+            {{ course.description }}
+        </p>
+
+        <div class="course-meta">
+            <span>Instructor: {{ course.instructor.userName }}</span>
+            <strong>{{ course.price | currency }}</strong>
+        </div>
+
+        <div class="course-actions">
+            <a class="details-btn" [routerLink]="['/courses', course._id]">
+                View Details
+            </a>
+
+            <button class="add-btn" [class.added]="isInCart" (click)="onAddToCart()">
+                @if (isInCart) {
+                Added
+                } @else {
+                Add to Cart
+                }
+            </button>
+        </div>
+    </div>
+</article>
