@@ -1,0 +1,44 @@
+/* Cut these from login/register and paste here: */
+button {
+  position: relative;
+  padding: 12px 30px;
+  background: #0d5ef4;
+  color: white;
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+  font-size: 15px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  width: 100%;
+}
+
+button::before,
+button::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 90%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.2);
+  transform: skewX(-20deg);
+  transition: 0.4s;
+}
+
+button::before {
+  left: 50%;
+}
+button::after {
+  right: 50%;
+}
+button:hover::before {
+  left: 100%;
+}
+button:hover::after {
+  right: 100%;
+}
+
+button.valid-btn::before,
+button.valid-btn::after {
+  display: none;
+}

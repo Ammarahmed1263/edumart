@@ -10,6 +10,8 @@ import {
 
 import { AuthService } from '../../../core/services/auth.service';
 import { Router, RouterLink } from '@angular/router';
+import { AuthHero } from '../auth-hero/auth-hero';
+import { Button } from '../../../shared/components/button/button';
 
 // 1. Fixed the typo in the function name
 function checkPassword(form: AbstractControl): ValidationErrors | null {
@@ -21,7 +23,7 @@ function checkPassword(form: AbstractControl): ValidationErrors | null {
 
 @Component({
   selector: 'app-register',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, AuthHero, Button],
   templateUrl: './register.html',
   styleUrl: './register.css',
   standalone: true,
@@ -39,7 +41,11 @@ export class Register {
     {
       userName: new FormControl('', [Validators.required, Validators.minLength(3)]),
       email: new FormControl('', [Validators.email, Validators.required]),
-      password: new FormControl('', [Validators.required, Validators.minLength(8)]),
+      password: new FormControl('', [
+        Validators.required,
+        Validators.minLength(8),
+        Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/),
+      ]),
       confirmPassword: new FormControl('', [Validators.required]),
     },
     {
@@ -80,17 +86,15 @@ export class Register {
 
     this.authServices.register(payload).subscribe({
       next: (data) => {
-        console.log("success", data);
-
+        console.log('success', data);
         console.log('Registration successful!', data);
         this.isLoading.set(false);
         console.log(data);
         this.success.set(true);
-        // this.router.navigate(['/my-courses']);
+        this.router.navigate(['/home']);
       },
       error: (err) => {
         console.log(err.message);
-
         this.isLoading.set(false);
         this.errorMessage.set(err.error?.data?.message || 'Registration failed.');
       },
