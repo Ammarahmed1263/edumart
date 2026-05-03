@@ -5,7 +5,7 @@ import { Register } from './features/auth/register/register';
 import { NotFound } from './shared/components/not-found/not-found';
 import { authGuard } from './core/guards/auth.guard';
 import { guestGuard } from './core/guards/guest.guard';
-import { Home } from './shared/components/home/home';
+import { HomePage } from './pages/home/home';
 export const routes: Routes = [
   { path: 'login', canActivate: [guestGuard], component: Login },
   { path: 'register', canActivate: [guestGuard], component: Register },
@@ -13,7 +13,7 @@ export const routes: Routes = [
     path: '',
     component: Layout,
     children: [
-      { path: '', component: Home },
+      { path: '', component: HomePage },
       {
         path: 'courses',
         loadComponent: () => import('./features/courses/courses').then((c) => c.Courses),

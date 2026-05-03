@@ -1,5 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
 :root {
+  --main-bg-color: #fff;
+  --sec-bg-color: #f0f6f8;
+  /* --sec-bg-color: #f5f7fd; */
+
+
   /* PRIMARY */
   --primary-50: #e7efff;
   --primary-100: #c2d6ff;

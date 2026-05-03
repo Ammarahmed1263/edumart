@@ -1,0 +1,18 @@
+<section class="popular-courses-section">
+  <div class="container">
+    <div class="section-header">
+      <h5 class="sub-title">Popular Courses</h5>
+      <h2 class="title">Explore Our Courses</h2>
+      <p class="description">
+        A curated collection of amazing courses, chosen based on popularity and ratings by students. 
+        Safe, Fun & Educational
+      </p>
+    </div>
+
+    <div class="courses-grid">
+      <div *ngFor="let course of popularCourses" class="course-item">
+        <app-course-card [course]="course"></app-course-card>
+      </div>
+    </div>
+  </div>
+</section>
