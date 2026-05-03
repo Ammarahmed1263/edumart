@@ -1,0 +1,59 @@
+@if (sessionData(); as data) {
+  <div class="checkout-container">
+    <div class="checkout-layout">
+      <section class="status-panel">
+        <h1>Payment Successful</h1>
+        <p>
+          Your transaction was completed successfully and your cart has been cleared.
+        </p>
+        <div class="status-box">
+          <div class="status-label">Order Number</div>
+          <div class="status-value">{{ data.orderId }}</div>
+        </div>
+        <div class="status-box compact">
+          <div class="status-label">Customer</div>
+          <div class="status-value">{{ data.customerName }}</div>
+        </div>
+      </section>
+
+      <section class="summary-section">
+        <div class="summary-card">
+          <div class="summary-header">
+            <h2>Order Receipt</h2>
+            <p>A receipt has been sent to your email.</p>
+          </div>
+
+          <div class="items-table">
+            @for (item of data.items; track $index) {
+              <app-receipt-item [name]="item" />
+            }
+          </div>
+
+          <div class="totals-box">
+            <div class="total-row">
+              <span>Subtotal</span>
+              <span>{{ data.totalAmount }} {{ data.currency | uppercase }}</span>
+            </div>
+            @if (data.totalDetails?.amount_discount) {
+              <div class="total-row discount-row">
+                <span>Discount</span>
+                <span>-{{ data.totalDetails?.amount_discount }} {{ data.currency | uppercase }}</span>
+              </div>
+            }
+            <div class="total-row grand-row">
+              <span>Total Paid</span>
+              <span>{{ data.totalAmount }} {{ data.currency | uppercase }}</span>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button type="button" class="checkout-btn" routerLink="/my-courses">Go to My Courses</button>
+            <button type="button" class="continue-btn" routerLink="/home">Explore More Courses</button>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+} @else {
+  <div class="empty-state">Loading your order details...</div>
+}

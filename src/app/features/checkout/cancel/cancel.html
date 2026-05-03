@@ -1,0 +1,65 @@
+<div class="checkout-container">
+  <div class="checkout-layout">
+    <section class="status-panel cancel-panel">
+      <h1>Transaction Not Completed</h1>
+      <p>
+        Your payment could not be processed at this time. Your cart has been saved and no charges
+        were made to your account.
+      </p>
+      <div class="status-box">
+        <div class="status-label">What happened</div>
+        <div class="status-value">Payment cancelled</div>
+      </div>
+      <div class="status-box compact">
+        <div class="status-label">Next step</div>
+        <div class="status-value">Return to checkout when ready</div>
+      </div>
+    </section>
+
+    <section class="summary-section">
+      <div class="summary-card">
+        <div class="summary-header">
+          <h2>Common Reasons</h2>
+          <p>Most cancellations happen for one of these reasons.</p>
+        </div>
+
+        <div class="items-table reasons-table">
+          <div class="item-row reason-row">
+            <div class="item-name">Window Closed</div>
+            <div class="item-price">The payment window was closed or refreshed.</div>
+          </div>
+          <div class="item-row reason-row">
+            <div class="item-name">Security Check</div>
+            <div class="item-price">Your bank may have flagged the transaction for review.</div>
+          </div>
+          <div class="item-row reason-row">
+            <div class="item-name">Connection Issue</div>
+            <div class="item-price">A temporary network error interrupted the flow.</div>
+          </div>
+          <div class="item-row reason-row">
+            <div class="item-name">Card Declined</div>
+            <div class="item-price">Insufficient funds or incorrect card details were entered.</div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button type="button" class="checkout-btn" (click)="tryAgain()" [disabled]="isRetrying()">
+            @if (isRetrying()) {
+              Processing...
+            } @else {
+              Try Again
+            }
+          </button>
+          <button
+            type="button"
+            class="continue-btn"
+            (click)="backToCart()"
+            [disabled]="isRetrying()"
+          >
+            Return to Cart
+          </button>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

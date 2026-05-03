@@ -1,0 +1,43 @@
+@if (order(); as o) {
+  <div class="checkout-container">
+    <div class="checkout-content">
+      <h1 class="page-title">Shopping Cart</h1>
+
+      <div class="checkout-layout">
+        <div class="items-section">
+          <div class="items-header">
+            <input type="checkbox" class="header-checkbox" aria-label="Select all items" />
+            <div class="header-cell product-header">PRODUCT</div>
+            <div class="header-cell price-header">PRICE</div>
+            <div class="header-cell action-header">REMOVE</div>
+          </div>
+
+          <div class="items-table">
+            @for (item of o.items; track $index) {
+              <app-cart-item
+                [item]="item"
+                [index]="$index"
+                (remove)="removeItem($event)"
+              />
+            }
+          </div>
+        </div>
+
+        <div class="summary-section">
+          <app-order-summary
+            [total]="o.total"
+            [status]="status()"
+            (checkout)="initiateCheckout()"
+            (back)="back()"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+} @else {
+  <div class="empty-state">
+    <h2>Your Cart is Empty</h2>
+    <p>No courses selected. Go back to explore and add courses to your cart.</p>
+    <button type="button" class="continue-btn" (click)="back()">Continue shopping</button>
+  </div>
+}

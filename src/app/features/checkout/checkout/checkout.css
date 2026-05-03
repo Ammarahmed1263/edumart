@@ -1,0 +1,138 @@
+/* checkout.css — only page-level layout styles remain.
+   Cart item styles → cart-item.css
+   Order summary styles → order-summary.css */
+
+.checkout-container {
+  background: #f8f9fa;
+  min-height: 100vh;
+  padding: 40px 20px;
+}
+
+.checkout-content {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.page-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 40px 0;
+}
+
+.checkout-layout {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 32px;
+}
+
+.items-section {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+.items-header {
+  display: grid;
+  grid-template-columns: 40px 1fr 120px 100px;
+  gap: 20px;
+  padding: 20px 24px;
+  background: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+  align-items: center;
+}
+
+.header-checkbox {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.header-cell {
+  font-size: 12px;
+  font-weight: 600;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.items-table {
+  display: flex;
+  flex-direction: column;
+}
+
+.summary-section {
+  position: sticky;
+  top: 20px;
+  height: fit-content;
+}
+
+.empty-state {
+  background: white;
+  border-radius: 8px;
+  padding: 100px 20px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.empty-state h2 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 8px 0;
+}
+
+.empty-state p {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0 0 24px 0;
+}
+
+.empty-state .continue-btn {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  border: none;
+  color: white;
+  display: inline-block;
+  width: auto;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.empty-state .continue-btn:hover {
+  background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+}
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .checkout-layout { grid-template-columns: 1fr 320px; gap: 24px; }
+  .items-header { grid-template-columns: 40px 1fr 100px 80px; padding: 16px; gap: 16px; }
+  .page-title { font-size: 28px; }
+}
+
+@media (max-width: 768px) {
+  .checkout-layout { grid-template-columns: 1fr; gap: 20px; }
+  .items-header { grid-template-columns: 36px 1fr 80px 70px; padding: 14px 16px; gap: 12px; }
+  .summary-section { position: static; }
+  .page-title { font-size: 24px; margin-bottom: 24px; }
+  .checkout-container { padding: 24px 16px; }
+}
+
+@media (max-width: 640px) {
+  .items-header { grid-template-columns: 32px 1fr 60px 60px; gap: 8px; padding: 12px 14px; }
+  .page-title { font-size: 20px; margin-bottom: 20px; }
+  .checkout-container { padding: 20px 12px; }
+}
+
+@media (max-width: 480px) {
+  .items-header { grid-template-columns: 30px 1fr 55px 50px; gap: 6px; padding: 10px 12px; }
+  .header-cell { font-size: 10px; }
+  .page-title { font-size: 18px; margin-bottom: 16px; }
+  .checkout-container { padding: 16px 10px; }
+}
