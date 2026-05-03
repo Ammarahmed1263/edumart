@@ -35,6 +35,9 @@ export class Register {
   isLoading = signal<boolean>(false);
   errorMessage = signal<string | null>(null);
 
+  showPassword: boolean = false;
+  showConfirmPassword: boolean = false;
+
   success = signal<boolean | null>(null);
 
   registerForm = new FormGroup(
@@ -99,5 +102,12 @@ export class Register {
         this.errorMessage.set(err.error?.data?.message || 'Registration failed.');
       },
     });
+  }
+
+  togglePassword() {
+    this.showPassword = !this.showPassword;
+  }
+  toggleConfirmPassword() {
+    this.showConfirmPassword = !this.showConfirmPassword;
   }
 }
