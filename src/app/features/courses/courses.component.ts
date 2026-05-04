@@ -1,0 +1,91 @@
+import { CurrencyPipe } from '@angular/common';
+import { Component, inject, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { CartService } from '../../core/services/cart.service';
+import { CourseService } from '../../core/services/course.service';
+import { Category, Course } from '../../core/models/course.model';
+import { CourseCardComponent } from '../../shared/components/course-card/course-card.component';
+
+@Component({
+    selector: 'app-courses',
+    standalone: true,
+    imports: [CourseCardComponent],
+    templateUrl: './courses.component.html',
+    styleUrl: './courses.component.css',
+})
+export class CoursesComponent {
+    private courseService = inject(CourseService);
+    private cartService = inject(CartService);
+
+    courses = signal<Course[]>([]);
+    categories = signal<Category[]>([]);
+
+    selectedCategoryId = signal<string>('');
+    isLoading = signal<boolean>(false);
+    errorMessage = signal<string | null>(null);
+    successMessage = signal<string | null>(null);
+
+    ngOnInit(): void {
+        this.loadCategories();
+        this.loadCourses();
+    }
+
+    loadCourses(categoryId?: string): void {
+        this.isLoading.set(true);
+        this.errorMessage.set(null);
+
+        this.courseService.getCourses(categoryId).subscribe({
+            next: (response) => {
+                this.courses.set(response.data.courses);
+                this.isLoading.set(false);
+            },
+            error: () => {
+                this.errorMessage.set('Failed to load courses. Please try again.');
+                this.isLoading.set(false);
+            },
+        });
+    }
+
+    loadCategories(): void {
+        this.courseService.getCategories().subscribe({
+            next: (response) => {
+                this.categories.set(response.data.categories);
+            },
+            error: () => {
+                this.errorMessage.set('Failed to load categories.');
+            },
+        });
+    }
+
+    filterByCategory(categoryId: string): void {
+        this.selectedCategoryId.set(categoryId);
+        this.loadCourses(categoryId);
+    }
+
+    showAllCourses(): void {
+        this.selectedCategoryId.set('');
+        this.loadCourses();
+    }
+
+    addToCart(course: Course): void {
+        const wasAdded = this.cartService.addToCart(course);
+
+        if (wasAdded) {
+            this.successMessage.set('Course added to cart successfully.');
+        } else {
+            this.successMessage.set('This course is already in your cart.');
+        }
+
+        setTimeout(() => {
+            this.successMessage.set(null);
+        }, 2000);
+    }
+
+    isCourseInCart(courseId: string): boolean {
+        return this.cartService.isInCart(courseId);
+    }
+
+    getCourseImage(course: Course): string {
+        return course.image || 'assets/download.webp';
+    }
+}

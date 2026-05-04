@@ -1,0 +1,55 @@
+<section class="courses-page">
+    <div class="courses-header">
+        <div>
+            <p class="eyebrow">Start learning today</p>
+            <h1>Explore Courses</h1>
+            <p class="subtitle">
+                Browse available courses, filter by category, and add your favorite courses to the cart.
+            </p>
+        </div>
+    </div>
+
+    @if (successMessage()) {
+    <div class="success-message">
+        {{ successMessage() }}
+    </div>
+    }
+
+    @if (errorMessage()) {
+    <div class="error-message">
+        {{ errorMessage() }}
+    </div>
+    }
+
+    <div class="categories-section">
+        <button class="category-btn" [class.active]="selectedCategoryId() === ''" (click)="showAllCourses()">
+            All
+        </button>
+
+        @for (category of categories(); track category._id) {
+        <button class="category-btn" [class.active]="selectedCategoryId() === category._id"
+            (click)="filterByCategory(category._id)">
+            {{ category.name }}
+        </button>
+        }
+    </div>
+
+    @if (isLoading()) {
+    <div class="loading-state">
+        Loading courses...
+    </div>
+    } @else {
+    @if (courses().length === 0) {
+    <div class="empty-state">
+        No courses found.
+    </div>
+    } @else {
+    <div class="courses-grid">
+        @for (course of courses(); track course._id) {
+        <app-course-card [course]="course" [isInCart]="isCourseInCart(course._id)"
+            (addToCart)="addToCart($event)"></app-course-card>
+        }
+    </div>
+    }
+    }
+</section>
