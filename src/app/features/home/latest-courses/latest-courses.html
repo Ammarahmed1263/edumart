@@ -4,15 +4,29 @@
       <h5 class="sub-title">Popular Courses</h5>
       <h2 class="title">Explore Our Courses</h2>
       <p class="description">
-        A curated collection of amazing courses, chosen based on popularity and ratings by students. 
+        A curated collection of amazing courses, chosen based on popularity and ratings by students.
         Safe, Fun & Educational
       </p>
     </div>
 
-    <div class="courses-grid">
-      <div *ngFor="let course of popularCourses" class="course-item">
-        <app-course-card [course]="course"></app-course-card>
-      </div>
-    </div>
+    @if (isLoading()) {
+      <app-loading text="Loading courses..." size="sm"></app-loading>
+    } @else {
+      @if (courses().length === 0) {
+        <div class="empty-state">No courses found.</div>
+      } @else {
+        <div class="courses-grid">
+          @for (course of courses(); track course._id) {
+            <div class="course-item">
+              <app-course-card
+                [course]="course"
+                [isInCart]="isCourseInCart(course._id)"
+                (addToCart)="addToCart($event)"
+              ></app-course-card>
+            </div>
+          }
+        </div>
+      }
+    }
   </div>
 </section>
