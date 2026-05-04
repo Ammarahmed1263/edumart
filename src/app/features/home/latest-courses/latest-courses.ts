@@ -1,81 +1,61 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { CourseCard, Course } from '../../../shared/components/course-card/course-card';
+import { Component, inject, signal } from '@angular/core';
+import { Course } from '../../../core/models/course.model';
+import { CartService } from '../../../core/services/cart.service';
+import { CourseService } from '../../../core/services/course.service';
+import { CourseCardComponent } from '../../../shared/components/course-card/course-card.component';
+import { LoadingComponent } from '../../../shared/components/loading/loading';
 
 @Component({
   selector: 'app-latest-courses',
   standalone: true,
-  imports: [CommonModule, CourseCard],
+  imports: [CourseCardComponent, LoadingComponent],
   templateUrl: './latest-courses.html',
   styleUrl: './latest-courses.css',
 })
 export class LatestCourses {
-  popularCourses: Course[] = [
-    {
-      id: '1',
-      title: 'Everything You Need to Know About Business',
-      thumbnail: 'https://motivoweb.com/nori/wp-content/uploads/2025/08/nori-background-16-720x640.jpg',
-      level: 'all',
-      categories: ['Business', 'Technology'],
-      rating: 4.5,
-      ratingCount: 120,
-      lessons: 15,
-      students: 1200,
-      price: 0,
-      isFree: true,
-    },
-    {
-      id: '2',
-      title: 'Data Science: Complete Data Science',
-      thumbnail: 'https://motivoweb.com/nori/wp-content/uploads/2025/08/nori-portfolio-07-720x720.jpg',
-      level: 'beginner',
-      categories: ['Business', 'Language', 'Marketing'],
-      rating: 4.8,
-      ratingCount: 225,
-      lessons: 20,
-      students: 2250,
-      price: 29,
-      originalPrice: 39,
-      isFree: false,
-    },
-    {
-      id: '3',
-      title: 'Sales Administrator Certification Practice',
-      thumbnail: 'https://motivoweb.com/nori/wp-content/uploads/2025/08/nori-post-4-720x720.jpg',
-      level: 'intermediate',
-      categories: ['Business', 'Marketing'],
-      rating: 4.2,
-      ratingCount: 85,
-      lessons: 12,
-      students: 850,
-      price: 0,
-      isFree: true,
-    },
-    {
-      id: '4',
-      title: 'Maximizing Your Sales Potential Tips',
-      thumbnail: 'https://motivoweb.com/nori/wp-content/uploads/2025/08/nori-post-3-720x720.jpg',
-      level: 'intermediate',
-      categories: ['Business', 'Science'],
-      rating: 4.6,
-      ratingCount: 150,
-      lessons: 10,
-      students: 1500,
-      price: 0,
-      isFree: true,
-    },
-    {
-      id: '5',
-      title: 'Web Development Fully Complete Guideline',
-      thumbnail: 'https://motivoweb.com/nori/wp-content/uploads/2025/08/nori-post-06-720x720.jpg',
-      level: 'beginner',
-      categories: ['Science', 'Technology'],
-      rating: 4.9,
-      ratingCount: 450,
-      lessons: 45,
-      students: 5600,
-      price: 0,
-      isFree: true,
+  private courseService = inject(CourseService);
+  private cartService = inject(CartService);
+
+  courses = signal<Course[]>([]);
+  isLoading = signal<boolean>(false);
+  errorMessage = signal<string | null>(null);
+  successMessage = signal<string | null>(null);
+
+  ngOnInit(): void {
+    this.loadLatestCourses();
+  }
+
+  loadLatestCourses(): void {
+    this.isLoading.set(true);
+    this.errorMessage.set(null);
+
+    this.courseService.getCourses().subscribe({
+      next: (response) => {
+        this.courses.set(response.data.courses.slice(0, 3));
+        this.isLoading.set(false);
+      },
+      error: () => {
+        this.errorMessage.set('Failed to load latest courses.');
+        this.isLoading.set(false);
+      },
+    });
+  }
+
+  addToCart(course: Course): void {
+    const wasAdded = this.cartService.addToCart(course);
+
+    if (wasAdded) {
+      this.successMessage.set('Course added to cart successfully.');
+    } else {
+      this.successMessage.set('This course is already in your cart.');
     }
-  ];
+
+    setTimeout(() => {
+      this.successMessage.set(null);
+    }, 2000);
+  }
+
+  isCourseInCart(courseId: string): boolean {
+    return this.cartService.isInCart(courseId);
+  }
 }

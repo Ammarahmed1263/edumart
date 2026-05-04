@@ -1,0 +1,97 @@
+:host {
+  display: block;
+}
+
+.loading-card {
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 18px 20px;
+  border-radius: 16px;
+  background: #ffffff;
+  border: 1px solid var(--text-gray-100);
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+  display: grid;
+  gap: 12px;
+  justify-items: center;
+  text-align: center;
+}
+
+.loading-card.sm {
+  max-width: 420px;
+  padding: 16px 18px;
+}
+
+.loading-card.lg {
+  max-width: 640px;
+  padding: 22px 24px;
+}
+
+.spinner {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 3px solid rgba(13, 94, 244, 0.15);
+  border-top-color: var(--primary-500);
+  animation: spin 0.9s linear infinite;
+}
+
+.loading-card.sm .spinner {
+  width: 36px;
+  height: 36px;
+}
+
+.loading-card.lg .spinner {
+  width: 52px;
+  height: 52px;
+}
+
+.loading-text {
+  font-weight: 700;
+  color: var(--text-gray-700);
+  letter-spacing: 0.2px;
+}
+
+.skeleton-lines {
+  width: 100%;
+  display: grid;
+  gap: 8px;
+}
+
+.line {
+  height: 10px;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    rgba(13, 94, 244, 0.08),
+    rgba(13, 94, 244, 0.2),
+    rgba(13, 94, 244, 0.08)
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.2s ease-in-out infinite;
+}
+
+.line-1 {
+  width: 85%;
+}
+.line-2 {
+  width: 70%;
+}
+.line-3 {
+  width: 50%;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
