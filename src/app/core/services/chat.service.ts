@@ -20,29 +20,32 @@ export class ChatService {
 
   sendMessage(content: string) {
     const userMessage: ChatMessage = { role: 'user', content };
-    this.messages.update((prev) => [...prev, userMessage]);
-
+    // We don't update local messages immediately because the backend returns the full history
     this.isLoading.set(true);
 
-    const headers = {
-      Authorization: `Bearer ${environment.openaiKey}`,
-      'Content-Type': 'application/json',
-    };
-
     const body = {
-      model: 'gpt-4o-mini',
-      temperature: 0.7,
-      max_tokens: 150,
-      messages: this.messages().map((m) => ({
-        role: m.role,
-        content: m.content,
-      })),
+      message: content,
+      history: this.messages()
+        .filter((m) => m.content !== 'Hello! How can I help you today?') // Filter out initial greeting if needed, or keep it
+        .map((m) => ({
+          role: m.role,
+          content: m.content,
+        })),
     };
 
-    this.http.post<any>(environment.openaiUrl, body, { headers }).subscribe({
+    this.http.post<any>(`${environment.apiUrl}/chatbot/chat`, body).subscribe({
       next: (res) => {
-        const assistantMessage = res.choices[0].message.content;
-        this.messages.update((prev) => [...prev, { role: 'assistant', content: assistantMessage }]);
+        // Based on the controller: res.status === 'success' and data is in res.data
+        if (res.status === 'success' && res.data.history) {
+          // The backend returns the full conversation history including the new user message and assistant reply
+          // We can map the roles to match our interface if necessary
+          const newHistory: ChatMessage[] = res.data.history.map((m: any) => ({
+            role: m.role,
+            content: m.content,
+          }));
+
+          this.messages.set(newHistory);
+        }
         this.isLoading.set(false);
       },
       error: (err) => {
@@ -51,7 +54,7 @@ export class ChatService {
           { role: 'assistant', content: 'Sorry, I encountered an error. Please try again later.' },
         ]);
         this.isLoading.set(false);
-        console.error('OpenAI error:', err);
+        console.error('Chatbot error:', err);
       },
     });
   }
