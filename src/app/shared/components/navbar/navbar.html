@@ -7,15 +7,40 @@
       <a routerLink="/" class="nav-brand"> Edumart<span>.</span></a>
 
       <div class="nav-links">
+        <a routerLink="/" routerLinkActive="active">Home</a>
         <a routerLink="/courses" routerLinkActive="active">Courses</a>
-        <a routerLink="/" fragment="categories">Categories</a>
+        <a routerLink="/categories" routerLinkActive="active">Categories</a>
       </div>
 
       <div class="nav-actions">
         @if (currentUser().token) {
-          <a routerLink="/my-courses" routerLinkActive="active">My Courses</a>
-          <a routerLink="/checkout" routerLinkActive="active">Cart</a>
-          <button class="btn-outline" (click)="logout()">Logout</button>
+          <a routerLink="/checkout" routerLinkActive="active">
+            <i class="fa-solid fa-cart-shopping"></i>
+          </a>
+          <div class="user-menu" [class.open]="menuOpen()">
+            <button class="user-pill" type="button" (click)="toggleMenu()">
+              <span class="user-avatar">{{ getUserInitials() }}</span>
+              <span class="user-name">{{ currentUser().user?.userName || 'My Account' }}</span>
+              <svg
+                class="chevron"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </button>
+
+            @if (menuOpen()) {
+              <div class="menu-panel">
+                <a routerLink="/my-courses" (click)="closeMenu()">Profile</a>
+
+                <button class="menu-logout" type="button" (click)="logout()">Logout</button>
+              </div>
+            }
+          </div>
         } @else {
           <a routerLink="/login" routerLinkActive="active">Login</a>
           <a routerLink="/register" class="btn-solid" routerLinkActive="active">Register</a>

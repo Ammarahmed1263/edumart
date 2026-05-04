@@ -6,7 +6,7 @@
   z-index: 1000;
 }
 
-.header-wrapper{
+.header-wrapper {
   background-color: var(--main-bg-color);
 }
 
@@ -69,7 +69,6 @@
 
 .nav-links a,
 .nav-actions a {
-  
   text-decoration: none;
   color: var(--text-gray-600);
   font-weight: 500;
@@ -86,7 +85,6 @@
 
 .btn-solid,
 .btn-outline {
-  
   font-weight: 600;
   border-radius: 12px;
   padding: 10px 18px;
@@ -114,6 +112,105 @@
   transform: translateY(-1px);
 }
 
+.user-menu {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.user-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: rgba(13, 94, 244, 0.08);
+  border: 1px solid rgba(13, 94, 244, 0.2);
+  border-radius: 999px;
+  color: var(--text-gray-800);
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.user-pill:hover {
+  transform: translateY(-1px);
+  background: rgba(13, 94, 244, 0.12);
+  box-shadow: 0 10px 22px rgba(13, 94, 244, 0.15);
+}
+
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary-500), var(--primary-700));
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.user-name {
+  max-width: 140px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chevron {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.2s ease;
+}
+
+.user-menu.open .chevron {
+  transform: rotate(180deg);
+}
+
+.menu-panel {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  min-width: 200px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 10px;
+  box-shadow: 0 24px 40px rgba(13, 94, 244, 0.16);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  display: grid;
+  gap: 6px;
+  z-index: 10;
+}
+
+.menu-panel a,
+.menu-logout {
+  padding: 10px 12px;
+  border-radius: 12px;
+  font-weight: 600;
+  color: var(--text-gray-700);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.menu-panel a:hover,
+.menu-logout:hover {
+  background: var(--primary-50);
+  color: var(--primary-600);
+}
+
 @media (max-width: 900px) {
   .nav-links {
     display: none;
@@ -122,7 +219,15 @@
 
 @media (max-width: 640px) {
   .nav-actions a:not(.btn-solid),
-  .nav-actions button {
+  .nav-actions button:not(.user-pill) {
+    display: none;
+  }
+
+  .user-pill {
+    padding: 8px 10px;
+  }
+
+  .user-name {
     display: none;
   }
 }

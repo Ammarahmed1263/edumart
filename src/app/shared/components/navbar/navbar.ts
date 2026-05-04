@@ -1,8 +1,7 @@
-import { Component, inject, HostListener, signal } from '@angular/core';
+import { Component, ElementRef, HostListener, inject, signal } from '@angular/core';
 import { AuthService } from '../../../core/services/auth.service';
 import { Router } from '@angular/router';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-
 
 @Component({
   selector: 'app-navbar',
@@ -13,22 +12,54 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 export class Navbar {
   private authService = inject(AuthService);
   private router = inject(Router);
-  
+  private elRef = inject(ElementRef);
+
   scrollProgress = signal(0);
+  menuOpen = signal(false);
 
   @HostListener('window:scroll', [])
   onWindowScroll() {
-    const totalHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const totalHeight =
+      document.documentElement.scrollHeight - document.documentElement.clientHeight;
     const currentScroll = window.scrollY;
     if (totalHeight > 0) {
       this.scrollProgress.set((currentScroll / totalHeight) * 100);
     }
   }
 
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    if (!this.elRef.nativeElement.contains(event.target)) {
+      this.menuOpen.set(false);
+    }
+  }
+
   currentUser = this.authService.currentUser;
+
+  toggleMenu() {
+    this.menuOpen.update((value) => !value);
+  }
+
+  closeMenu() {
+    this.menuOpen.set(false);
+  }
+
+  getUserInitials(): string {
+    const user = this.currentUser().user;
+    const name = user?.userName?.trim();
+    if (name) {
+      const parts = name.split(' ').filter(Boolean);
+      const first = parts[0]?.[0] ?? '';
+      const last = parts.length > 1 ? parts[parts.length - 1]?.[0] : '';
+      return `${first}${last}`.toUpperCase();
+    }
+    const email = user?.email?.trim();
+    return email ? email[0].toUpperCase() : 'U';
+  }
 
   logout() {
     this.authService.logout();
-    this.router.navigate(['/my-courses']);
+    this.router.navigate(['/login']);
+    this.closeMenu();
   }
 }

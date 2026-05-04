@@ -1,42 +1,71 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { LoginPayload, RegisterPayload, AuthResponse } from '../models/user.model';
-import { tap, Observable } from 'rxjs';
+import {
+  LoginPayload,
+  RegisterPayload,
+  AuthResponse,
+  MeResponse,
+  User,
+} from '../models/user.model';
+import { tap } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   private http = inject(HttpClient);
-  currentUser = signal<{ token: string | null }>({ token: localStorage.getItem('token') });
+  private apiUrl = environment.apiUrl;
+  currentUser = signal<{ token: string | null; user: User | null }>({
+    token: localStorage.getItem('token'),
+    user: null,
+  });
 
-  login(userData: LoginPayload): Observable<AuthResponse> {
-    console.log(environment);
+  constructor() {
+    if (this.getToken()) {
+      this.loadCurrentUser();
+    }
+  }
 
-    console.log(environment.apiUrl);
+  private setAuthState(token: string | null, user: User | null) {
+    if (token) {
+      localStorage.setItem('token', token);
+    } else {
+      localStorage.removeItem('token');
+    }
+    this.currentUser.set({ token, user });
+  }
 
-    return this.http.post<AuthResponse>(`${environment.apiUrl}/auth/login`, userData).pipe(
+  login(userData: LoginPayload) {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/auth/login`, userData).pipe(
       tap((response) => {
-        let token = response?.data.token;
-        localStorage.setItem('token', token);
-        this.currentUser.set({ token });
+        const token = response?.data.token ?? null;
+        this.setAuthState(token, response?.data.user ?? null);
       }),
     );
   }
 
-  register(userData: RegisterPayload): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${environment.apiUrl}/auth/register`, userData).pipe(
+  register(userData: RegisterPayload) {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/auth/register`, userData).pipe(
       tap((response) => {
-        let token = response.data.token;
-        localStorage.setItem('token', token);
-        this.currentUser.set({ token });
+        const token = response?.data.token ?? null;
+        this.setAuthState(token, response?.data.user ?? null);
       }),
     );
+  }
+
+  loadCurrentUser() {
+    return this.http.get<MeResponse>(`${this.apiUrl}/auth/me`).subscribe({
+      next: (response) => {
+        this.currentUser.update((state) => ({ ...state, user: response.data.user }));
+      },
+      error: () => {
+        this.currentUser.update((state) => ({ ...state, user: null }));
+      },
+    });
   }
 
   logout() {
-    localStorage.removeItem('token');
-    this.currentUser.set({ token: null });
+    this.setAuthState(null, null);
   }
 
   getToken() {
