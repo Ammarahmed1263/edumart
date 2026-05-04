@@ -86,6 +86,6 @@ export class CoursesComponent {
     }
 
     getCourseImage(course: Course): string {
-        return course.imageUrl || 'assets/download.webp';
+        return course.image || 'assets/download.webp';
     }
 }

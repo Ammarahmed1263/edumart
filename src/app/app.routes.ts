@@ -17,7 +17,17 @@ export const routes: Routes = [
             { path: '', pathMatch: 'full', component: HomePage },
             {
                 path: 'courses',
-                loadComponent: () => import('./features/courses/courses').then((c) => c.Courses),
+                canActivate: [authGuard],
+                loadComponent: () =>
+                    import('./features/courses/courses.component').then((c) => c.CoursesComponent),
+            },
+            {
+                path: 'courses/:id',
+                canActivate: [authGuard],
+                loadComponent: () =>
+                    import('./features/course-detail/course-detail.component').then(
+                        (c) => c.CourseDetailComponent
+                    ),
             },
             {
                 path: 'checkout',

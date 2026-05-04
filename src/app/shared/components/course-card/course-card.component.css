@@ -5,6 +5,8 @@
     box-shadow: 0 10px 30px rgba(31, 41, 55, 0.08);
     border: 1px solid #f3f4f6;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
     height: 100%;
 }
 
@@ -25,6 +27,9 @@
 
 .course-content {
     padding: 20px;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
 }
 
 .course-category {
@@ -38,6 +43,13 @@
     margin: 0 0 10px;
     color: #111827;
     font-size: 22px;
+    line-height: 1.25;
+    min-height: 55px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .course-description {
@@ -59,6 +71,7 @@
     align-items: center;
     color: #4b5563;
     font-size: 14px;
+    margin-top: auto;
     margin-bottom: 18px;
 }
 

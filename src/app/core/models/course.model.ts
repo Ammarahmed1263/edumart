@@ -18,7 +18,7 @@ export interface Course {
     description: string;
     price: number;
     //will need image for course cards
-    imageUrl?: string;
+    image: string;
     category: Category;
     instructor: Instructor;
     createdAt?: string;

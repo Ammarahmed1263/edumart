@@ -32,7 +32,7 @@ export class CartService {
             courseId: course._id,
             title: course.title,
             price: course.price,
-            imageUrl: course.imageUrl,
+            imageUrl: course.image,
             categoryName: course.category?.name,
             instructorName: course.instructor?.userName,
         };

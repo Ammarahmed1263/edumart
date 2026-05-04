@@ -21,6 +21,6 @@ export class CourseCardComponent {
     }
 
     getCourseImage(): string {
-        return this.course.imageUrl || 'assets/download.webp';
+        return this.course.image || 'assets/download.webp';
     }
 }

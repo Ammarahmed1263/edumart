@@ -5,11 +5,23 @@
 }
 
 .back-link {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
     margin-bottom: 24px;
     color: #0d5ef4;
     font-weight: 700;
     text-decoration: none;
+}
+
+.back-link svg {
+    display: block;
+    flex-shrink: 0;
+}
+
+.back-link svg path {
+    stroke: currentColor;
 }
 
 .success-message,
