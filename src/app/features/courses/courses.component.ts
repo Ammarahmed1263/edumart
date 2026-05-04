@@ -1,6 +1,5 @@
-import { CurrencyPipe } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CartService } from '../../core/services/cart.service';
 import { CourseService } from '../../core/services/course.service';
 import { Category, Course } from '../../core/models/course.model';
@@ -17,6 +16,8 @@ import { LoadingComponent } from '../../shared/components/loading/loading';
 export class CoursesComponent {
   private courseService = inject(CourseService);
   private cartService = inject(CartService);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
 
   courses = signal<Course[]>([]);
   categories = signal<Category[]>([]);
@@ -28,7 +29,11 @@ export class CoursesComponent {
 
   ngOnInit(): void {
     this.loadCategories();
-    this.loadCourses();
+    this.route.queryParamMap.subscribe((params) => {
+      const categoryId = params.get('category') ?? '';
+      this.selectedCategoryId.set(categoryId);
+      this.loadCourses(categoryId || undefined);
+    });
   }
 
   loadCourses(categoryId?: string): void {
@@ -59,13 +64,17 @@ export class CoursesComponent {
   }
 
   filterByCategory(categoryId: string): void {
-    this.selectedCategoryId.set(categoryId);
-    this.loadCourses(categoryId);
+    this.router.navigate([], {
+      queryParams: { category: categoryId },
+      queryParamsHandling: 'merge',
+    });
   }
 
   showAllCourses(): void {
-    this.selectedCategoryId.set('');
-    this.loadCourses();
+    this.router.navigate([], {
+      queryParams: { category: null },
+      queryParamsHandling: 'merge',
+    });
   }
 
   addToCart(course: Course): void {

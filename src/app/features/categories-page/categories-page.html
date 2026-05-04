@@ -1,0 +1,42 @@
+<section class="categories-page">
+  <div class="page-header">
+    <div>
+      <p class="eyebrow">Explore learning paths</p>
+      <h1>All Categories</h1>
+      <p class="subtitle">Find the right track and jump straight into the courses you want.</p>
+    </div>
+    <a class="ghost-link" routerLink="/courses">View all courses</a>
+  </div>
+
+  @if (errorMessage()) {
+    <div class="categories-message error">{{ errorMessage() }}</div>
+  }
+
+  @if (isLoading()) {
+    <div class="categories-message">Loading categories...</div>
+  } @else {
+    @if (categories().length === 0) {
+      <div class="categories-message">No categories found.</div>
+    } @else {
+      <div class="category-grid">
+        @for (category of categories(); track category._id; let i = $index) {
+          <a
+            class="category-card"
+            routerLink="/courses"
+            [queryParams]="{ category: category._id }"
+            [style.--accent]="accentColors[i % accentColors.length]"
+          >
+            <div class="icon">
+              <span>{{ category.name.charAt(0) }}</span>
+            </div>
+            <div>
+              <h4>{{ category.name }}</h4>
+              <p>{{ category.description || 'Curated courses that match your goals.' }}</p>
+            </div>
+            <span class="meta">Explore courses</span>
+          </a>
+        }
+      </div>
+    }
+  }
+</section>

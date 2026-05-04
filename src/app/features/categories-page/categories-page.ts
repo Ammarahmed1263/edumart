@@ -1,15 +1,16 @@
 import { Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { Category } from '../../../core/models/course.model';
-import { CourseService } from '../../../core/services/course.service';
+import { Category } from '../../core/models/course.model';
+import { CourseService } from '../../core/services/course.service';
 
 @Component({
-  selector: 'app-categories',
+  selector: 'app-categories-page',
+  standalone: true,
   imports: [RouterLink],
-  templateUrl: './categories.html',
-  styleUrl: './categories.css',
+  templateUrl: './categories-page.html',
+  styleUrl: './categories-page.css',
 })
-export class Categories {
+export class CategoriesPage {
   private courseService = inject(CourseService);
 
   categories = signal<Category[]>([]);
