@@ -20,13 +20,15 @@ export class ChatService {
 
   sendMessage(content: string) {
     const userMessage: ChatMessage = { role: 'user', content };
-    // We don't update local messages immediately because the backend returns the full history
+    // Update local messages immediately so the user sees their message while waiting
+    this.messages.update((prev) => [...prev, userMessage]);
     this.isLoading.set(true);
 
     const body = {
       message: content,
       history: this.messages()
-        .filter((m) => m.content !== 'Hello! How can I help you today?') // Filter out initial greeting if needed, or keep it
+        .filter((m) => m.content !== 'Hello! How can I help you today?')
+        .slice(0, -1) // Exclude the message we just added since 'message' is sent separately
         .map((m) => ({
           role: m.role,
           content: m.content,

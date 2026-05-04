@@ -1,4 +1,4 @@
-import { Component, signal, ElementRef, ViewChild, AfterViewChecked, inject } from '@angular/core';
+import { Component, signal, ElementRef, ViewChild, inject, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ChatService } from '../../../core/services/chat.service';
@@ -10,12 +10,24 @@ import { ChatService } from '../../../core/services/chat.service';
   templateUrl: './chatbot.html',
   styleUrl: './chatbot.css',
 })
-export class ChatbotComponent implements AfterViewChecked {
+export class ChatbotComponent {
   @ViewChild('scrollMe') private myScrollContainer!: ElementRef;
 
   chatService = inject(ChatService);
   isOpen = signal(false);
   userInput = '';
+
+  constructor() {
+    // This effect runs whenever messages or isLoading signals change
+    effect(() => {
+      this.chatService.messages();
+      this.chatService.isLoading();
+      this.isOpen();
+
+      // We still use setTimeout to wait for the DOM render cycle
+      setTimeout(() => this.scrollToBottom(), 50);
+    });
+  }
 
   toggleChat() {
     this.isOpen.update((v) => !v);
@@ -28,14 +40,17 @@ export class ChatbotComponent implements AfterViewChecked {
     this.userInput = '';
   }
 
-  ngAfterViewChecked() {
-    this.scrollToBottom();
-  }
-
   private scrollToBottom(): void {
     try {
-      this.myScrollContainer.nativeElement.scrollTop =
-        this.myScrollContainer.nativeElement.scrollHeight;
+      const element = this.myScrollContainer.nativeElement;
+      const lastMessage = element.lastElementChild;
+
+      if (lastMessage) {
+        lastMessage.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+        });
+      }
     } catch (err) {}
   }
 }
