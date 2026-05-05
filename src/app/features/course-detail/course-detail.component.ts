@@ -22,6 +22,7 @@ export class CourseDetailComponent {
     lessons = signal<Lesson[]>([]);
 
     isLoading = signal<boolean>(false);
+    enrolledCourseIds = signal<Set<string>>(new Set());
     errorMessage = signal<string | null>(null);
     successMessage = signal<string | null>(null);
     lessonsMessage = signal<string | null>(null);
@@ -37,6 +38,16 @@ export class CourseDetailComponent {
         this.loadCourseDetails(courseId);
         this.loadCourseReviews(courseId);
         this.loadCourseLessons(courseId);
+        this.loadEnrollments();
+    }
+
+    loadEnrollments(): void {
+        this.courseService.getMyCourses().subscribe({
+            next: (response) => {
+                const ids = new Set(response.data.courses.map((c: any) => c._id));
+                this.enrolledCourseIds.set(ids);
+            },
+        });
     }
 
     loadCourseDetails(courseId: string): void {
@@ -84,6 +95,11 @@ export class CourseDetailComponent {
         const selectedCourse = this.course();
 
         if (!selectedCourse) {
+            return;
+        }
+
+        if (this.enrolledCourseIds().has(selectedCourse._id)) {
+            this.successMessage.set('You are already enrolled in this course.');
             return;
         }
 

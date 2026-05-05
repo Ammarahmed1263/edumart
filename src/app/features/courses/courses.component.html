@@ -52,6 +52,7 @@
           <app-course-card
             [course]="course"
             [isInCart]="isCourseInCart(course._id)"
+            [isEnrolled]="enrolledCourseIds().has(course._id)"
             (addToCart)="addToCart($event)"
           ></app-course-card>
         }

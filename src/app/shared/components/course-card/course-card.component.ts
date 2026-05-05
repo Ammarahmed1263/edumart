@@ -13,6 +13,7 @@ import { Course } from '../../../core/models/course.model';
 export class CourseCardComponent {
     @Input({ required: true }) course!: Course;
     @Input() isInCart = false;
+    @Input() isEnrolled = false;
 
     @Output() addToCart = new EventEmitter<Course>();
 

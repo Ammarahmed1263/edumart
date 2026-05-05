@@ -60,15 +60,22 @@
             </div>
 
             <div class="course-actions">
-                <button class="add-btn" [class.added]="isCourseInCart()" (click)="addToCart()">
-                    @if (isCourseInCart()) {
-                    Already in Cart
+                <button 
+                    class="add-btn" 
+                    [class.added]="isCourseInCart() || enrolledCourseIds().has(course()!._id)" 
+                    [disabled]="enrolledCourseIds().has(course()!._id)"
+                    (click)="addToCart()"
+                >
+                    @if (enrolledCourseIds().has(course()!._id)) {
+                        Enrolled
+                    } @else if (isCourseInCart()) {
+                        Already in Cart
                     } @else {
-                    Add to Cart
+                        Add to Cart
                     }
                 </button>
 
-                <a class="cart-btn" routerLink="/cart">
+                <a class="cart-btn" routerLink="/checkout">
                     Go to Cart
                 </a>
             </div>

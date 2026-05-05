@@ -23,16 +23,27 @@ export class CoursesComponent {
   categories = signal<Category[]>([]);
 
   selectedCategoryId = signal<string>('');
+  enrolledCourseIds = signal<Set<string>>(new Set());
   isLoading = signal<boolean>(false);
   errorMessage = signal<string | null>(null);
   successMessage = signal<string | null>(null);
 
   ngOnInit(): void {
     this.loadCategories();
+    this.loadEnrollments();
     this.route.queryParamMap.subscribe((params) => {
       const categoryId = params.get('category') ?? '';
       this.selectedCategoryId.set(categoryId);
       this.loadCourses(categoryId || undefined);
+    });
+  }
+
+  loadEnrollments(): void {
+    this.courseService.getMyCourses().subscribe({
+      next: (response) => {
+        const ids = new Set(response.data.courses.map((c: any) => c._id));
+        this.enrolledCourseIds.set(ids);
+      },
     });
   }
 
@@ -78,6 +89,11 @@ export class CoursesComponent {
   }
 
   addToCart(course: Course): void {
+    if (this.enrolledCourseIds().has(course._id)) {
+      this.successMessage.set('You are already enrolled in this course.');
+      return;
+    }
+
     const wasAdded = this.cartService.addToCart(course);
 
     if (wasAdded) {
