@@ -60,7 +60,6 @@ export interface CartItem {
   instructorName?: string;
 }
 
-/* Backend response shapes */
 
 export interface CoursesResponse {
   status: string;
