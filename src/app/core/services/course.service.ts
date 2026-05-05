@@ -50,3 +50,5 @@ export class CourseService {
     return this.http.get<MyCoursesResponse>(`${this.apiUrl}/enrollments/my-courses`);
   }
 }
+
+

@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, computed } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CartService } from '../../core/services/cart.service';
 import { CourseService } from '../../core/services/course.service';
@@ -27,6 +27,20 @@ export class CoursesComponent {
   isLoading = signal<boolean>(false);
   errorMessage = signal<string | null>(null);
   successMessage = signal<string | null>(null);
+  searchTerm = signal<string>('');
+
+  filteredCourses = computed(() => {
+    const term = this.searchTerm().toLowerCase().trim();
+    const allCourses = this.courses();
+    if (!term) return allCourses;
+    
+    return allCourses.filter(course => 
+      course.title.toLowerCase().includes(term) || 
+      course.description.toLowerCase().includes(term) ||
+      course.instructor.userName.toLowerCase().includes(term)
+    );
+  });
+
 
   ngOnInit(): void {
     this.loadCategories();
@@ -105,6 +119,11 @@ export class CoursesComponent {
     setTimeout(() => {
       this.successMessage.set(null);
     }, 2000);
+  }
+
+  onSearch(event: Event): void {
+    const value = (event.target as HTMLInputElement).value;
+    this.searchTerm.set(value);
   }
 
   isCourseInCart(courseId: string): boolean {

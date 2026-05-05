@@ -21,6 +21,18 @@
     </div>
   }
 
+  <div class="search-section">
+    <div class="search-container">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input 
+        type="text" 
+        placeholder="Search for courses, topics, or instructors..." 
+        (input)="onSearch($event)"
+        [value]="searchTerm()"
+      />
+    </div>
+  </div>
+
   <div class="categories-section">
     <button
       class="category-btn"
@@ -45,10 +57,12 @@
     <app-loading text="Loading courses..."></app-loading>
   } @else {
     @if (courses().length === 0) {
-      <div class="empty-state">No courses found.</div>
+      <div class="empty-state">No courses found in this category.</div>
+    } @else if (filteredCourses().length === 0) {
+      <div class="empty-state">No results found for "{{ searchTerm() }}".</div>
     } @else {
       <div class="courses-grid">
-        @for (course of courses(); track course._id) {
+        @for (course of filteredCourses(); track course._id) {
           <app-course-card
             [course]="course"
             [isInCart]="isCourseInCart(course._id)"
@@ -59,4 +73,5 @@
       </div>
     }
   }
+
 </section>

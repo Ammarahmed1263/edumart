@@ -23,6 +23,8 @@ export class CourseDetailComponent {
 
     isLoading = signal<boolean>(false);
     enrolledCourseIds = signal<Set<string>>(new Set());
+
+
     errorMessage = signal<string | null>(null);
     successMessage = signal<string | null>(null);
     lessonsMessage = signal<string | null>(null);
@@ -130,3 +132,4 @@ export class CourseDetailComponent {
         return course.image || 'assets/download.webp';
     }
 }
+
