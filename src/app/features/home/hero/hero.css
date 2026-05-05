@@ -170,12 +170,19 @@
   color: var(--text-gray-500);
 }
 
+.image-wrapper {
+  position: relative;
+  z-index: 2;
+}
+
 .hero-glow {
   position: absolute;
   border-radius: 50%;
-  filter: blur(20px);
-  opacity: 0.5;
+  filter: blur(40px);
+  opacity: 0.6;
+  z-index: 1;
 }
+
 
 .hero-glow-primary {
   width: 240px;

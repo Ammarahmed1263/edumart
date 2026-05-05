@@ -190,3 +190,21 @@
 .typing-indicator span:nth-child(3) {
   animation-delay: 0.4s;
 }
+@media (max-width: 640px) {
+  .chatbot-container {
+    bottom: 1.5rem;
+    right: 1.5rem;
+  }
+
+  .chat-toggle {
+    width: 60px;
+    height: 60px;
+  }
+
+  .chat-window {
+    width: calc(100vw - 3rem);
+    max-width: 350px;
+    bottom: 75px;
+    right: 0;
+  }
+}

@@ -1,6 +1,6 @@
 # EduMarket - Online Course Marketplace
 
-A diploma project built with Angular (Frontend) + Express.js (Backend) that demonstrates authentication, payment integration (Razorpay), and chatbot support.
+A diploma project built with Angular (Frontend) + Express.js (Backend) that demonstrates authentication, payment integration (Stripe), and chatbot support.
 
 ## Project Overview
 
@@ -10,7 +10,7 @@ EduMarket is an online platform where students can browse, purchase, and enroll 
 
 - User authentication with JWT (Login/Register + protected routes)
 - Frontend-only cart with Signals + localStorage
-- Real payment integration using Razorpay test mode
+- Real payment integration using Stripe test mode
 - Enrollment after successful payment
 - "My Courses" page with lesson access
 - Course reviews

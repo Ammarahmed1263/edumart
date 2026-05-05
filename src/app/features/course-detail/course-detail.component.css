@@ -183,27 +183,40 @@
 
 .lesson-item {
     display: flex;
-    gap: 14px;
+    gap: 16px;
     align-items: center;
-    padding: 14px 0;
-    border-bottom: 1px solid #f3f4f6;
+    padding: 16px;
+    border-radius: 14px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    border: 1px solid transparent;
 }
 
-.lesson-item:last-child {
-    border-bottom: none;
+.lesson-item:hover {
+    background: var(--primary-50);
+    transform: translateX(8px);
+    border-color: var(--primary-100);
 }
 
 .lesson-number {
-    width: 34px;
-    height: 34px;
+    width: 38px;
+    height: 38px;
     border-radius: 50%;
-    background: #eef2ff;
-    color: #667eea;
+    background: #f1f5f9;
+    color: var(--text-gray-500);
     font-weight: 800;
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: all 0.3s ease;
 }
+
+.lesson-item:hover .lesson-number {
+    background: var(--primary-500);
+    color: white;
+    transform: scale(1.1);
+}
+
 
 .lesson-item h3 {
     margin: 0 0 4px;

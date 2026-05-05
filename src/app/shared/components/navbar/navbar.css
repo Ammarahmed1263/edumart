@@ -246,10 +246,11 @@
 }
 
 @media (max-width: 640px) {
-  .nav-actions a:not(.btn-solid),
-  .nav-actions button:not(.user-pill) {
+  .nav-actions > a:not(.btn-solid, .cart-link),
+  .nav-actions > button:not(.user-pill) {
     display: none;
   }
+
 
   .user-pill {
     padding: 8px 10px;

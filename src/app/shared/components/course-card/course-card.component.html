@@ -1,4 +1,4 @@
-<article class="course-card">
+<article class="course-card" [routerLink]="['/courses', course._id]">
   <div class="thumbnail-wrapper">
     <img class="thumbnail" [src]="course.image" [alt]="course.title" />
     <div class="price-wrapper">
@@ -39,7 +39,7 @@
           class="add-btn" 
           [class.added]="isInCart || isEnrolled" 
           [disabled]="isEnrolled"
-          (click)="onAddToCart()"
+          (click)="$event.stopPropagation(); onAddToCart()"
         >
           @if (isEnrolled) {
             Enrolled
@@ -53,3 +53,4 @@
     </div>
   </div>
 </article>
+

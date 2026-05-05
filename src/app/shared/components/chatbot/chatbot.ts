@@ -1,4 +1,4 @@
-import { Component, signal, ElementRef, ViewChild, inject, effect } from '@angular/core';
+import { Component, signal, ElementRef, ViewChild, inject, effect, HostListener } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ChatService } from '../../../core/services/chat.service';
 
@@ -12,8 +12,17 @@ import { ChatService } from '../../../core/services/chat.service';
 export class ChatbotComponent {
   @ViewChild('scrollMe') private myScrollContainer!: ElementRef;
 
+  private elRef = inject(ElementRef);
   chatService = inject(ChatService);
   isOpen = signal(false);
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    if (this.isOpen() && !this.elRef.nativeElement.contains(event.target)) {
+      this.isOpen.set(false);
+    }
+  }
+
   userInput = '';
 
   constructor() {
