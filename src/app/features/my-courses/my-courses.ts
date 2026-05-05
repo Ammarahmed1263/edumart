@@ -1,14 +1,12 @@
-import { CurrencyPipe } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { Course } from '../../core/models/course.model';
 import { AuthService } from '../../core/services/auth.service';
 import { CourseService } from '../../core/services/course.service';
-import { Course } from '../../core/models/course.model';
-import { CourseCardComponent } from '../../shared/components/course-card/course-card.component';
 
 @Component({
   selector: 'app-my-courses',
-  imports: [RouterLink, CurrencyPipe,CourseCardComponent],
+  imports: [RouterLink],
   templateUrl: './my-courses.html',
   styleUrl: './my-courses.css',
 })

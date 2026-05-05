@@ -2,6 +2,7 @@ import { Component, ElementRef, HostListener, inject, signal } from '@angular/co
 import { AuthService } from '../../../core/services/auth.service';
 import { Router } from '@angular/router';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { CartService } from '../../../core/services/cart.service';
 
 @Component({
   selector: 'app-navbar',
@@ -13,6 +14,7 @@ export class Navbar {
   private authService = inject(AuthService);
   private router = inject(Router);
   private elRef = inject(ElementRef);
+  public cartService = inject(CartService);
 
   scrollProgress = signal(0);
   menuOpen = signal(false);

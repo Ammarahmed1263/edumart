@@ -71,14 +71,14 @@
             [style.backgroundImage]="course.image ? 'url(' + course.image + ')' : ''"
           ></div>
           <div class="course-body">
-            <span class="course-category">{{ course.category?.name || 'General' }}</span>
+            <span class="course-category">{{ course.category.name || 'General' }}</span>
             <h3>
               <a [routerLink]="['/courses', course._id]">{{ course.title }}</a>
             </h3>
             <p>{{ course.description }}</p>
             <div class="course-meta">
               <span>Instructor</span>
-              <strong>{{ course.instructor?.userName || 'Instructor' }}</strong>
+              <strong>{{ course.instructor.userName || 'Instructor' }}</strong>
             </div>
             <div class="course-actions">
               <a class="btn-primary" [routerLink]="['/courses', course._id]">Continue</a>
