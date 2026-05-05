@@ -94,7 +94,7 @@ export class Register {
         this.isLoading.set(false);
         console.log(data);
         this.success.set(true);
-        this.router.navigate(['/home']);
+        this.router.navigate(['/']);
       },
       error: (err) => {
         console.log(err.message);

@@ -28,7 +28,7 @@
               [style.--accent]="accentColors[i % accentColors.length]"
             >
               <div class="icon">
-                <span>{{ category.name.charAt(0) }}</span>
+                <span>{{ category.name.slice(0, 2) | uppercase }}</span>
               </div>
               <div>
                 <h4>{{ category.name }}</h4>
