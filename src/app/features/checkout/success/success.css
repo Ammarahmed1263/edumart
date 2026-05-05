@@ -1,5 +1,5 @@
 .checkout-container {
-  background: #f8f9fa;
+  background: var(--sec-bg-color);
   min-height: 100vh;
   padding: 20px 14px;
 }
@@ -14,9 +14,9 @@
 
 .status-panel,
 .summary-card {
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  background: var(--main-bg-color);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(13, 94, 244, 0.05);
 }
 
 .status-panel {
@@ -30,7 +30,7 @@
   margin: 0;
   font-size: 26px;
   line-height: 1.1;
-  color: #1f2937;
+  color: var(--text-gray-900);
   font-weight: 700;
 }
 
@@ -38,16 +38,16 @@
   margin: 14px 0 0;
   font-size: 15px;
   line-height: 1.7;
-  color: #6b7280;
+  color: var(--text-gray-500);
   max-width: 420px;
 }
 
 .status-box {
   margin-top: 22px;
   padding: 18px 20px;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  background: #fafbfc;
+  border: 1px solid var(--text-gray-200);
+  border-radius: 12px;
+  background: var(--sec-bg-color);
 }
 
 .status-box.compact {
@@ -58,14 +58,14 @@
   font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: #9ca3af;
+  color: var(--text-gray-400);
   font-weight: 600;
 }
 
 .status-value {
   margin-top: 6px;
   font-size: 16px;
-  color: #1f2937;
+  color: var(--text-gray-900);
   font-weight: 700;
 }
 
@@ -75,30 +75,31 @@
 
 .summary-header {
   padding-bottom: 18px;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--text-gray-200);
   margin-bottom: 18px;
 }
 
 .summary-header h2 {
   margin: 0;
   font-size: 21px;
-  color: #1f2937;
+  color: var(--text-gray-900);
   font-weight: 700;
 }
 
 .summary-header p {
   margin: 8px 0 0;
   font-size: 14px;
-  color: #9ca3af;
+  color: var(--text-gray-400);
 }
 
 .items-table {
   display: flex;
   flex-direction: column;
   gap: 0;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
+  border: 1px solid var(--text-gray-200);
+  border-radius: 12px;
   overflow: hidden;
+  padding: 0 1rem;
 }
 
 .item-row {
@@ -106,8 +107,8 @@
   justify-content: space-between;
   gap: 20px;
   padding: 16px 18px;
-  border-bottom: 1px solid #f3f4f6;
-  background: white;
+  border-bottom: 1px solid var(--text-gray-100);
+  background: var(--main-bg-color);
 }
 
 .item-row:last-child {
@@ -117,21 +118,21 @@
 .item-name {
   font-size: 14px;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--text-gray-900);
 }
 
 .item-price {
   font-size: 13px;
-  color: #9ca3af;
+  color: var(--text-gray-400);
   white-space: nowrap;
 }
 
 .totals-box {
   margin-top: 18px;
   padding: 18px;
-  border-radius: 8px;
-  background: #f9fafb;
-  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: var(--sec-bg-color);
+  border: 1px solid var(--text-gray-200);
 }
 
 .total-row {
@@ -140,7 +141,7 @@
   align-items: center;
   padding: 10px 0;
   font-size: 14px;
-  color: #6b7280;
+  color: var(--text-gray-500);
 }
 
 .discount-row {
@@ -150,8 +151,8 @@
 .grand-row {
   margin-top: 6px;
   padding-top: 14px;
-  border-top: 1px solid #e5e7eb;
-  color: #1f2937;
+  border-top: 1px solid var(--text-gray-200);
+  color: var(--text-gray-900);
   font-size: 16px;
   font-weight: 700;
 }
@@ -167,7 +168,7 @@
 .continue-btn {
   width: 100%;
   min-height: 48px;
-  border-radius: 8px;
+  border-radius: 12px;
   border: none;
   font-size: 15px;
   font-weight: 700;
@@ -176,21 +177,21 @@
 }
 
 .checkout-btn {
-  background: #1f2937;
+  background: var(--primary-500);
   color: white;
 }
 
 .checkout-btn:hover {
-  background: #111827;
+  background: var(--primary-600);
 }
 
 .continue-btn {
-  background: #eef2ff;
-  color: #1d4ed8;
+  background: var(--text-gray-100);
+  color: var(--text-gray-800);
 }
 
 .continue-btn:hover {
-  background: #e0e7ff;
+  background: var(--text-gray-200);
 }
 
 .empty-state {
@@ -198,10 +199,10 @@
   margin: 0 auto;
   padding: 80px 20px;
   text-align: center;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  color: #6b7280;
+  background: var(--main-bg-color);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(13, 94, 244, 0.05);
+  color: var(--text-gray-500);
 }
 
 @media (min-width: 640px) {

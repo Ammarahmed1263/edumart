@@ -3,7 +3,7 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { SessionData } from '../models/checkout.types';
 import { PaymentService } from '../services/payment.service';
-import { CartService } from '../../cart/cart-service';
+import { CartService } from '../../../core/services/cart.service';
 import { ReceiptItem } from '../components/receipt-item/receipt-item';
 
 @Component({
@@ -28,7 +28,7 @@ export class Success implements OnInit {
       next: (res) => {
         this.sessionData.set(res.data);
         try {
-          this.cartService.clear();
+          this.cartService.clearCart();
         } catch (e) {
           console.error('Failed to clear cart after success', e);
         }

@@ -1,7 +1,8 @@
 import { Component, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { CartService } from '../../cart/cart-service';
+import { CartService } from '../../../core/services/cart.service';
 import { PaymentService } from '../services/payment.service';
+import { CartItem } from '../../../core/models/course.model';
 
 @Component({
   selector: 'app-checkout-cancel',
@@ -20,7 +21,7 @@ export class Cancel {
   }
 
   tryAgain() {
-    const cart = this.cartService.cart();
+    const cart = this.cartService.cartItems();
     if (!cart || cart.length === 0) {
       alert('Your cart is empty. Please add items before checkout.');
       this.router.navigate(['/checkout']);
@@ -29,7 +30,7 @@ export class Cancel {
 
     this.isRetrying.set(true);
 
-    const courseIds = cart.map((item: any) => item.id);
+    const courseIds = cart.map((item: CartItem) => item.courseId);
 
     this.paymentService.createCheckoutSession(courseIds).subscribe({
       next: (response) => {

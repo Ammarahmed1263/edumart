@@ -1,7 +1,7 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Component, computed, inject, PLATFORM_ID, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { CartService } from '../../cart/cart-service';
+import { CartService } from '../../../core/services/cart.service';
 import { CartItem } from '../components/cart-item/cart-item';
 import { OrderSummary } from '../components/order-summary/order-summary';
 import { OrderItem } from '../models/checkout.types';
@@ -21,15 +21,15 @@ export class Checkout {
   private cartService = inject(CartService);
 
   order = computed(() => {
-    const items = this.cartService.cart() || [];
+    const items = this.cartService.cartItems() || [];
     if (!items.length) return null;
-    const total = items.reduce((sum: number, item: any) => sum + (item.price || 0), 0);
+    const total = this.cartService.totalPrice();
     return {
-      items: items.map((i: any) => ({
-        id: i.id,
+      items: items.map((i) => ({
+        id: i.courseId,
         title: i.title,
         price: i.price,
-        image: i.image,
+        image: i.imageUrl,
       })),
       total,
     };
@@ -63,6 +63,9 @@ export class Checkout {
   }
 
   removeItem(index: number) {
-    this.cartService.remove(index);
+    const item = this.cartService.cartItems()[index];
+    if (item) {
+      this.cartService.removeFromCart(item.courseId);
+    }
   }
 }
