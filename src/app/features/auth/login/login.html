@@ -20,7 +20,7 @@
       <p>Enter your credentials to continue learning</p>
     </div>
 
-    <form (ngSubmit)="handleSumbit(loginForm)" #loginForm="ngForm" novalidate>
+    <form (ngSubmit)="handleSubmit(loginForm)" #loginForm="ngForm" novalidate>
 
       <!-- Email -->
       <div class="form-group">
@@ -38,8 +38,8 @@
         </div>
 
         @if(email?.invalid && (email?.dirty || email?.touched)) {
-        @if(email?.errors?.['required']) { <span class="field-hint error">Email is required</span> }
-        @if(email?.errors?.['email']) { <span class="field-hint error">Invalid Email Format</span> }
+          @if(email?.errors?.['required']) { <span class="field-hint error">Email is required</span> }
+          @if(email?.errors?.['pattern']) { <span class="field-hint error">Invalid Email Format</span> }
         }
 
       </div>
@@ -102,11 +102,6 @@
         [isDisabled]="loginForm.invalid || isLoading()" [isValid]="loginForm.valid"></app-button>
 
       <!-- Error Alert -->
-      @if(errorMessage()){
-      <div class="error-alert">
-        <span>{{ errorMessage() }}</span>
-      </div>
-      }
 
       <p class="register-prompt">Don't have an account? <a routerLink="/register" routerLinkActive="active">Create one
           free</a></p>

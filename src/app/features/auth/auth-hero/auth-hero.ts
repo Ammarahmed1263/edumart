@@ -5,7 +5,9 @@ import { Component, Input } from '@angular/core';
   imports: [],
   templateUrl: './auth-hero.html',
   styleUrl: './auth-hero.css',
+  standalone: true,
 })
+
 export class AuthHero {
   @Input() titleStart: string = 'Learn Without';
   @Input() titleHighlight: string = 'Limits.';

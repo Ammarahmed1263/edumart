@@ -35,11 +35,12 @@
 
 .chat-window {
   position: absolute;
-  bottom: 90px;
+  bottom: 85px;
   right: 0;
   width: 400px;
   max-width: 90vw;
-  height: 600px;
+  height: 500px;
+  max-height: calc(100vh - 130px);
   background: white;
   border-radius: 16px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);

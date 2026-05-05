@@ -5,8 +5,10 @@ import { Component, Input } from '@angular/core';
   imports: [],
   templateUrl: './button.html',
   styleUrl: './button.css',
+  standalone: true,
 })
-export class Button {
+export class ButtonComponent {
+
   @Input() defaultText: string = 'Submit';
   @Input() loadingText: string = 'Submitting...';
   @Input() isLoading: boolean = false;

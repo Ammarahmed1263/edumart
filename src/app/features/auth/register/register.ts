@@ -9,9 +9,11 @@ import {
 } from '@angular/forms';
 
 import { AuthService } from '../../../core/services/auth.service';
+import { ToastService } from '../../../core/services/toast.service';
+
 import { Router, RouterLink } from '@angular/router';
 import { AuthHero } from '../auth-hero/auth-hero';
-import { Button } from '../../../shared/components/button/button';
+import { ButtonComponent } from '../../../shared/components/button/button';
 
 // 1. Fixed the typo in the function name
 function checkPassword(form: AbstractControl): ValidationErrors | null {
@@ -23,7 +25,8 @@ function checkPassword(form: AbstractControl): ValidationErrors | null {
 
 @Component({
   selector: 'app-register',
-  imports: [ReactiveFormsModule, RouterLink, AuthHero, Button],
+  imports: [ReactiveFormsModule, RouterLink, AuthHero, ButtonComponent],
+
   templateUrl: './register.html',
   styleUrl: './register.css',
   standalone: true,
@@ -31,9 +34,10 @@ function checkPassword(form: AbstractControl): ValidationErrors | null {
 export class Register {
   private authServices = inject(AuthService);
   private router = inject(Router);
+  private toast = inject(ToastService);
+
 
   isLoading = signal<boolean>(false);
-  errorMessage = signal<string | null>(null);
 
   showPassword: boolean = false;
   showConfirmPassword: boolean = false;
@@ -85,7 +89,6 @@ export class Register {
     };
     this.success.set(null);
     this.isLoading.set(true);
-    this.errorMessage.set(null);
 
     this.authServices.register(payload).subscribe({
       next: (data) => {
@@ -94,13 +97,15 @@ export class Register {
         this.isLoading.set(false);
         console.log(data);
         this.success.set(true);
+        this.toast.success('Registration successful! Welcome to EduMart.');
         this.router.navigate(['/']);
+
       },
       error: (err) => {
         console.log(err.message);
         this.isLoading.set(false);
-        this.errorMessage.set(err.error?.data?.message || 'Registration failed.');
       },
+
     });
   }
 
