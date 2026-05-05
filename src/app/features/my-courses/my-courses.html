@@ -1,1 +1,91 @@
-<p>my-courses works!</p>
+<section class="page">
+  <div class="hero" id="profile">
+    <div class="hero-card">
+      <div class="hero-avatar">{{ userInitials() }}</div>
+      <div class="hero-content">
+        <span class="hero-pill">Your learning dashboard</span>
+        <h1>Welcome back, {{ userName() }}</h1>
+        @if (userEmail()) {
+          <p>{{ userEmail() }}</p>
+        }
+      </div>
+      <div class="hero-actions">
+        <a class="btn-primary" routerLink="/courses">Browse courses</a>
+      </div>
+    </div>
+
+    <div class="hero-stats">
+      <div class="stat-pill">
+        <span class="stat-value">{{ results() }}</span>
+        <span class="stat-label">Enrolled courses</span>
+      </div>
+      <div class="stat-pill">
+        <span class="stat-value">{{ courses().length }}</span>
+        <span class="stat-label">Active learning</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="courses-section section-container" id="enrollments">
+  <div class="section-header">
+    <div>
+      <span class="eyebrow">My learning</span>
+      <h2>My Courses</h2>
+    </div>
+    <span class="count">{{ results() }} courses</span>
+  </div>
+
+  @if (isLoading()) {
+    <div class="course-grid">
+      @for (item of [1, 2, 3]; track item) {
+        <div class="course-card skeleton">
+          <div class="course-thumb"></div>
+          <div class="course-body">
+            <div class="skeleton-line short"></div>
+            <div class="skeleton-line"></div>
+            <div class="skeleton-line"></div>
+            <div class="skeleton-line medium"></div>
+          </div>
+        </div>
+      }
+    </div>
+  } @else if (errorMessage()) {
+    <div class="empty-state">
+      <h3>We hit a snag</h3>
+      <p>{{ errorMessage() }}</p>
+      <button class="btn-primary" type="button" (click)="loadMyCourses()">Try again</button>
+    </div>
+  } @else if (courses().length === 0) {
+    <div class="empty-state">
+      <h3>No enrollments yet</h3>
+      <p>Start learning today by picking a course that matches your goals.</p>
+      <a class="btn-primary" routerLink="/courses">Explore courses</a>
+    </div>
+  } @else {
+    <div class="course-grid">
+      @for (course of courses(); track course._id) {
+        <article class="course-card">
+          <div
+            class="course-thumb"
+            [style.backgroundImage]="course.image ? 'url(' + course.image + ')' : ''"
+          ></div>
+          <div class="course-body">
+            <span class="course-category">{{ course.category?.name || 'General' }}</span>
+            <h3>
+              <a [routerLink]="['/courses', course._id]">{{ course.title }}</a>
+            </h3>
+            <p>{{ course.description }}</p>
+            <div class="course-meta">
+              <span>Instructor</span>
+              <strong>{{ course.instructor?.userName || 'Instructor' }}</strong>
+            </div>
+            <div class="course-actions">
+              <a class="btn-primary" [routerLink]="['/courses', course._id]">Continue</a>
+            </div>
+          </div>
+        </article>
+      }
+    </div>
+  }
+</section>

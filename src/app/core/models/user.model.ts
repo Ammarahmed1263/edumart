@@ -10,18 +10,28 @@ export interface LoginPayload {
   password: string;
 }
 
+export interface User {
+  id?: string;
+  _id?: string;
+  userName: string;
+  email: string;
+  role: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
 // We add this to handle your backend's jsend format
 export interface AuthResponse {
   status?: string;
   data: {
     token: string;
-    user: {
-      id: string;
-      userName: string;
-      email: string;
-      role: string;
-      createdAt?: string;
-      updatedAt?: string;
-    };
+    user: User;
+  };
+}
+
+export interface MeResponse {
+  status?: string;
+  data: {
+    user: User;
   };
 }

@@ -3,51 +3,50 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import {
-    CategoriesResponse,
-    CoursesResponse,
-    LessonsResponse,
-    ReviewsResponse,
-    SingleCourseResponse,
+  CategoriesResponse,
+  CoursesResponse,
+  LessonsResponse,
+  MyCoursesResponse,
+  ReviewsResponse,
+  SingleCourseResponse,
 } from '../models/course.model';
 
 @Injectable({
-    providedIn: 'root',
+  providedIn: 'root',
 })
 export class CourseService {
-    private http = inject(HttpClient);
-    private apiUrl = environment.apiUrl;
+  private http = inject(HttpClient);
+  private apiUrl = environment.apiUrl;
 
-    getCourses(categoryId?: string): Observable<CoursesResponse> {
-        let params = new HttpParams();
+  getCourses(categoryId?: string): Observable<CoursesResponse> {
+    let params = new HttpParams();
 
-        if (categoryId) {
-            params = params.set('category', categoryId);
-        }
-
-        return this.http.get<CoursesResponse>(`${this.apiUrl}/courses`, {
-            params,
-        });
+    if (categoryId) {
+      params = params.set('category', categoryId);
     }
 
-    getCategories(): Observable<CategoriesResponse> {
-        return this.http.get<CategoriesResponse>(`${this.apiUrl}/categories`);
-    }
+    return this.http.get<CoursesResponse>(`${this.apiUrl}/courses`, {
+      params,
+    });
+  }
 
-    getCourseById(courseId: string): Observable<SingleCourseResponse> {
-        return this.http.get<SingleCourseResponse>(
-            `${this.apiUrl}/courses/${courseId}`,
-        );
-    }
+  getCategories(): Observable<CategoriesResponse> {
+    return this.http.get<CategoriesResponse>(`${this.apiUrl}/categories`);
+  }
 
-    getCourseReviews(courseId: string): Observable<ReviewsResponse> {
-        return this.http.get<ReviewsResponse>(
-            `${this.apiUrl}/courses/${courseId}/reviews`,
-        );
-    }
+  getCourseById(courseId: string): Observable<SingleCourseResponse> {
+    return this.http.get<SingleCourseResponse>(`${this.apiUrl}/courses/${courseId}`);
+  }
 
-    getCourseLessons(courseId: string): Observable<LessonsResponse> {
-        return this.http.get<LessonsResponse>(
-            `${this.apiUrl}/courses/${courseId}/lessons`,
-        );
-    }
+  getCourseReviews(courseId: string): Observable<ReviewsResponse> {
+    return this.http.get<ReviewsResponse>(`${this.apiUrl}/courses/${courseId}/reviews`);
+  }
+
+  getCourseLessons(courseId: string): Observable<LessonsResponse> {
+    return this.http.get<LessonsResponse>(`${this.apiUrl}/courses/${courseId}/lessons`);
+  }
+
+  getMyCourses(): Observable<MyCoursesResponse> {
+    return this.http.get<MyCoursesResponse>(`${this.apiUrl}/enrollments/my-courses`);
+  }
 }
