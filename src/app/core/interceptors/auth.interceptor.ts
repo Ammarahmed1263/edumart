@@ -26,7 +26,6 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       if (error.error instanceof ErrorEvent) {
         errorMessage = `Error: ${error.error.message}`;
       } else {
-        // Prioritize backend message
         errorMessage = error.error?.data?.message || error.error?.message || error.message || errorMessage;
 
         if (error.status === 401) {
@@ -43,7 +42,11 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       }
 
 
-      toastService.error(errorMessage);
+      const isUnenrolledCourseAccess = error.status === 403 && req.url.includes('/lessons');
+      if (!isUnenrolledCourseAccess) {
+        toastService.error(errorMessage);
+      }
+
       return throwError(() => error);
     })
   );

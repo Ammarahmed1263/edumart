@@ -2,11 +2,10 @@ import { Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Category } from '../../../core/models/course.model';
 import { CourseService } from '../../../core/services/course.service';
-import { UpperCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-categories',
-  imports: [RouterLink, UpperCasePipe],
+  imports: [RouterLink],
   templateUrl: './categories.html',
   styleUrl: './categories.css',
 })
