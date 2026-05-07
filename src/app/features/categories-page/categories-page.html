@@ -1,42 +1,69 @@
 <section class="categories-page">
-  <div class="page-header">
-    <div>
-      <p class="eyebrow">Explore learning paths</p>
-      <h1>All Categories</h1>
-      <p class="subtitle">Find the right track and jump straight into the courses you want.</p>
+  <!-- Hero Section -->
+  <div class="categories-hero">
+    <div class="hero-content">
+      <span class="eyebrow">Discover Your Path</span>
+      <h1>Master a New Skill by <span class="gradient-text">Category</span></h1>
+      <p class="subtitle">Explore specialized learning paths tailored to your career goals and interests.</p>
+      
+      <div class="search-box">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input 
+          type="text" 
+          placeholder="Search for a category (e.g. Design, Coding...)" 
+          (input)="onSearch($event)"
+          [value]="searchTerm()"
+        />
+      </div>
     </div>
-    <a class="ghost-link" routerLink="/courses">View all courses</a>
+    <div class="hero-visual">
+        <div class="blob-shape blob-1"></div>
+        <div class="blob-shape blob-2"></div>
+    </div>
   </div>
 
   @if (errorMessage()) {
-    <div class="categories-message error">{{ errorMessage() }}</div>
+    <div class="error-message">{{ errorMessage() }}</div>
   }
 
   @if (isLoading()) {
-    <div class="categories-message">Loading categories...</div>
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>Loading learning paths...</p>
+    </div>
   } @else {
-    @if (categories().length === 0) {
-      <div class="categories-message">No categories found.</div>
-    } @else {
-      <div class="category-grid">
-        @for (category of categories(); track category._id; let i = $index) {
-          <a
-            class="category-card"
-            routerLink="/courses"
-            [queryParams]="{ category: category._id }"
-            [style.--accent]="accentColors[i % accentColors.length]"
-          >
-            <div class="icon">
-              <span>{{ category.name.charAt(0) }}</span>
-            </div>
-            <div>
-              <h4>{{ category.name }}</h4>
-              <p>{{ category.description || 'Curated courses that match your goals.' }}</p>
-            </div>
-            <span class="meta">Explore courses</span>
-          </a>
+    <div class="grid-container">
+        @if (filteredCategories().length === 0) {
+          <div class="empty-state">
+            <i class="fa-solid fa-search"></i>
+            <p>No categories match "<strong>{{ searchTerm() }}</strong>"</p>
+            <button (click)="clearSearch()" class="btn-clear">Clear search</button>
+          </div>
+        } @else {
+          <div class="category-grid">
+            @for (category of filteredCategories(); track category._id; let i = $index) {
+              <a
+                class="category-card"
+                routerLink="/courses"
+                [queryParams]="{ category: category._id }"
+                [style.--accent]="accentColors[i % accentColors.length]"
+              >
+                <div class="card-bg"></div>
+                <div class="icon-box">
+                  <i class="fa-solid" [class]="getCategoryIcon(category.name)"></i>
+                </div>
+                <div class="card-content">
+                  <h4>{{ category.name }}</h4>
+                  <p>{{ category.description || 'Access curated courses in this domain.' }}</p>
+                </div>
+                <div class="card-footer">
+                  <span class="count">Explore courses</span>
+                  <i class="fa-solid fa-arrow-right"></i>
+                </div>
+              </a>
+            }
+          </div>
         }
-      </div>
-    }
+    </div>
   }
 </section>
