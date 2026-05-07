@@ -5,10 +5,13 @@
   
   <nav class="navbar">
     <div class="nav-left">
-      <a routerLink="/" class="nav-brand"> Edumart<span class="dot">.</span></a>
+      <button class="mobile-toggle" (click)="toggleMobileMenu()" [class.active]="mobileMenuOpen()" aria-label="Toggle navigation">
+        <i class="fa-solid" [class.fa-bars]="!mobileMenuOpen()" [class.fa-xmark]="mobileMenuOpen()"></i>
+      </button>
+      <a routerLink="/" class="nav-brand" (click)="closeMenu()"> Edumart<span class="dot">.</span></a>
     </div>
 
-    <div class="nav-links">
+    <div class="nav-links desktop-only">
       <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
       <a routerLink="/courses" routerLinkActive="active">Courses</a>
       <a routerLink="/categories" routerLinkActive="active">Categories</a>
@@ -17,7 +20,7 @@
     <div class="nav-right">
       <div class="nav-actions">
         @if (currentUser().token) {
-          <a routerLink="/checkout" routerLinkActive="active" class="cart-link" title="Shopping Cart">
+          <a routerLink="/checkout" routerLinkActive="active" class="cart-link" title="Shopping Cart" (click)="closeMenu()">
             <i class="fa-solid fa-cart-shopping"></i>
             @if (cartService.cartCount() > 0) {
               <span class="cart-badge">{{ cartService.cartCount() }}</span>
@@ -49,10 +52,36 @@
             }
           </div>
         } @else {
-          <a routerLink="/login" class="link-login">Login</a>
-          <a routerLink="/register" class="btn-primary-nav">Get Started</a>
+          <div class="auth-btns desktop-only">
+            <a routerLink="/login" class="link-login">Login</a>
+            <a routerLink="/register" class="btn-primary-nav">Get Started</a>
+          </div>
         }
       </div>
     </div>
   </nav>
+
+  <!-- Mobile Menu Overlay -->
+  <div class="mobile-menu" [class.open]="mobileMenuOpen()">
+    <div class="mobile-menu-content">
+      <div class="mobile-nav-links">
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMenu()">
+          <i class="fa-solid fa-house"></i> Home
+        </a>
+        <a routerLink="/courses" routerLinkActive="active" (click)="closeMenu()">
+          <i class="fa-solid fa-book"></i> Courses
+        </a>
+        <a routerLink="/categories" routerLinkActive="active" (click)="closeMenu()">
+          <i class="fa-solid fa-layer-group"></i> Categories
+        </a>
+      </div>
+      
+      @if (!currentUser().token) {
+        <div class="mobile-auth-actions">
+          <a routerLink="/login" class="mobile-btn-secondary" (click)="closeMenu()">Login</a>
+          <a routerLink="/register" class="mobile-btn-primary" (click)="closeMenu()">Get Started</a>
+        </div>
+      }
+    </div>
+  </div>
 </div>

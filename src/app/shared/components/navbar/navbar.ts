@@ -18,6 +18,7 @@ export class Navbar {
 
   scrollProgress = signal(0);
   menuOpen = signal(false);
+  mobileMenuOpen = signal(false);
 
   @HostListener('window:scroll', [])
   onWindowScroll() {
@@ -33,6 +34,7 @@ export class Navbar {
   onDocumentClick(event: MouseEvent) {
     if (!this.elRef.nativeElement.contains(event.target)) {
       this.menuOpen.set(false);
+      this.mobileMenuOpen.set(false);
     }
   }
 
@@ -40,10 +42,17 @@ export class Navbar {
 
   toggleMenu() {
     this.menuOpen.update((value) => !value);
+    if (this.menuOpen()) this.mobileMenuOpen.set(false);
+  }
+
+  toggleMobileMenu() {
+    this.mobileMenuOpen.update((value) => !value);
+    if (this.mobileMenuOpen()) this.menuOpen.set(false);
   }
 
   closeMenu() {
     this.menuOpen.set(false);
+    this.mobileMenuOpen.set(false);
   }
 
   getUserInitials(): string {
