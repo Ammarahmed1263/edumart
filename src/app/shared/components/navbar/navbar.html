@@ -2,53 +2,57 @@
   <div class="scroll-progress-container">
     <div class="scroll-progress-bar" [style.width.%]="scrollProgress()"></div>
   </div>
+  
   <nav class="navbar">
-    <a routerLink="/" class="nav-brand"> Edumart<span>.</span></a>
+    <div class="nav-left">
+      <a routerLink="/" class="nav-brand"> Edumart<span class="dot">.</span></a>
+    </div>
 
     <div class="nav-links">
-      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
-        >Home</a
-      >
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
       <a routerLink="/courses" routerLinkActive="active">Courses</a>
       <a routerLink="/categories" routerLinkActive="active">Categories</a>
     </div>
 
-    <div class="nav-actions">
-      @if (currentUser().token) {
-        <a routerLink="/checkout" routerLinkActive="active" class="cart-link">
-          <i class="fa-solid fa-cart-shopping"></i>
-          @if (cartService.cartCount() > 0) {
-            <span class="cart-badge">{{ cartService.cartCount() }}</span>
-          }
-        </a>
-        <div class="user-menu" [class.open]="menuOpen()">
-          <button class="user-pill" type="button" (click)="toggleMenu()">
-            <span class="user-avatar">{{ getUserInitials() }}</span>
-            <span class="user-name">{{ currentUser().user?.userName || 'My Account' }}</span>
-            <svg
-              class="chevron"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <path d="m6 9 6 6 6-6" />
-            </svg>
-          </button>
+    <div class="nav-right">
+      <div class="nav-actions">
+        @if (currentUser().token) {
+          <a routerLink="/checkout" routerLinkActive="active" class="cart-link" title="Shopping Cart">
+            <i class="fa-solid fa-cart-shopping"></i>
+            @if (cartService.cartCount() > 0) {
+              <span class="cart-badge">{{ cartService.cartCount() }}</span>
+            }
+          </a>
+          
+          <div class="user-menu" [class.open]="menuOpen()">
+            <button class="user-pill" type="button" (click)="toggleMenu()">
+              <div class="user-avatar-box">
+                <span class="user-avatar">{{ getUserInitials() }}</span>
+              </div>
+              <span class="user-name">{{ currentUser().user?.userName || 'User' }}</span>
+              <i class="fa-solid fa-chevron-down chevron"></i>
+            </button>
 
-          @if (menuOpen()) {
-            <div class="menu-panel">
-              <a routerLink="/my-courses" (click)="closeMenu()">Profile</a>
-
-              <button class="menu-logout" type="button" (click)="logout()">Logout</button>
-            </div>
-          }
-        </div>
-      } @else {
-        <a routerLink="/login" routerLinkActive="active">Login</a>
-        <a routerLink="/register" class="btn-solid" routerLinkActive="active">Register</a>
-      }
+            @if (menuOpen()) {
+              <div class="menu-panel">
+                <div class="menu-links">
+                  <a routerLink="/my-courses" (click)="closeMenu()">
+                    <i class="fa-solid fa-user"></i> 
+                    <span>Profile</span>
+                  </a>
+                  <button class="menu-logout" type="button" (click)="logout()">
+                    <i class="fa-solid fa-right-from-bracket"></i> 
+                    <span>Logout</span>
+                  </button>
+                </div>
+              </div>
+            }
+          </div>
+        } @else {
+          <a routerLink="/login" class="link-login">Login</a>
+          <a routerLink="/register" class="btn-primary-nav">Get Started</a>
+        }
+      </div>
     </div>
   </nav>
 </div>
