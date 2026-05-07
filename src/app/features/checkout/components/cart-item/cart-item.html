@@ -1,5 +1,11 @@
 <div class="item-row">
-  <input type="checkbox" class="item-checkbox" [attr.aria-label]="'Select ' + item().title" />
+  <input
+    type="checkbox"
+    class="item-checkbox"
+    [checked]="isChecked()"
+    (change)="onToggleCheck()"
+    [attr.aria-label]="'Select ' + item().title"
+  />
   <div class="product-cell">
     <div class="product-image">
       <img [src]="item().image" [alt]="item().title" class="course-image" />

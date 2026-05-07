@@ -6,18 +6,26 @@
       <div class="checkout-layout">
         <div class="items-section">
           <div class="items-header">
-            <input type="checkbox" class="header-checkbox" aria-label="Select all items" />
+            <input
+              type="checkbox"
+              [checked]="isAllSelected()"
+              (change)="toggleAll()"
+              class="header-checkbox"
+              aria-label="Select all items"
+            />
             <div class="header-cell product-header">PRODUCT</div>
             <div class="header-cell price-header">PRICE</div>
             <div class="header-cell action-header">REMOVE</div>
           </div>
 
           <div class="items-table">
-            @for (item of o.items; track $index) {
+            @for (item of cartItems(); track $index) {
               <app-cart-item
-                [item]="item"
+                [item]="{ id: item.courseId, image: item.imageUrl, ...item }"
                 [index]="$index"
+                [isChecked]="checkedIds().has(item.courseId)"
                 (remove)="removeItem($event)"
+                (toggleCheck)="toggleCheck($event)"
               />
             }
           </div>

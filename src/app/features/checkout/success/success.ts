@@ -28,9 +28,13 @@ export class Success implements OnInit {
       next: (res) => {
         this.sessionData.set(res.data);
         try {
-          this.cartService.clearCart();
+          if (res.data.courseIds && res.data.courseIds.length > 0) {
+            this.cartService.removeMultiple(res.data.courseIds);
+          } else {
+            this.cartService.clearCart();
+          }
         } catch (e) {
-          console.error('Failed to clear cart after success', e);
+          console.error('Failed to clear purchased items from cart', e);
         }
       },
       error: (err) => console.error('Failed to load session data', err),

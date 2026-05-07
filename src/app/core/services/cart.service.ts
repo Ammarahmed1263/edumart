@@ -58,6 +58,14 @@ export class CartService {
         this.updateCart([]);
     }
 
+    removeMultiple(courseIds: string[]): void {
+        const updatedItems = this.cartItemsSignal().filter(
+            (item) => !courseIds.includes(item.courseId),
+        );
+
+        this.updateCart(updatedItems);
+    }
+
     isInCart(courseId: string): boolean {
         return this.cartItemsSignal().some((item) => item.courseId === courseId);
     }

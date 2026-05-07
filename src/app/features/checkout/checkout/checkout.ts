@@ -20,28 +20,55 @@ export class Checkout {
   private platformId = inject(PLATFORM_ID);
   private cartService = inject(CartService);
 
+  readonly cartItems = this.cartService.cartItems;
+
+  status = signal<'idle' | 'creating' | 'success' | 'error'>('idle');
+  checkedIds = signal<Set<string>>(new Set<string>());
+
   order = computed(() => {
     const items = this.cartService.cartItems() || [];
+    const checkedIds = this.checkedIds();
+
+    const checkedItems = items.filter((i) => checkedIds.has(i.courseId));
+
     if (!items.length) return null;
-    const total = this.cartService.totalPrice();
+
+    const total = checkedItems.reduce((sum, i) => sum + i.price, 0);
+
     return {
-      items: items.map((i) => ({
+      items: checkedItems.map((i) => ({
         id: i.courseId,
         title: i.title,
         price: i.price,
         image: i.imageUrl,
+        instructorName: i.instructorName
       })),
       total,
+      count: checkedItems.length
     };
   });
 
-  status = signal<'idle' | 'creating' | 'success' | 'error'>('idle');
+  isAllSelected = computed(() => {
+    const cartCount = this.cartService.cartItems().length;
+    const checkedCount = this.checkedIds().size;
+
+    return cartCount > 0 && cartCount === checkedCount;
+  });
+
+  constructor() {
+    const items = this.cartService.cartItems();
+    if (items.length) {
+      this.checkedIds.set(new Set<string>(items.map((i) => i.courseId)));
+    }
+  }
 
   initiateCheckout() {
     const o = this.order();
-    if (!o) return;
+    if (!o || o.count === 0) return;
+
     this.status.set('creating');
     const courseIds = o.items?.map((i: OrderItem) => i.id) || [];
+
     this.paymentService.createCheckoutSession(courseIds).subscribe({
       next: (response) => {
         if (isPlatformBrowser(this.platformId) && response?.data?.sessionUrl) {
@@ -67,5 +94,36 @@ export class Checkout {
     if (item) {
       this.cartService.removeFromCart(item.courseId);
     }
+  }
+
+  toggleCheck(index: number) {
+    const item = this.cartService.cartItems()[index];
+
+    if (item) {
+      this.checkedIds.update((currentIds) => {
+        const newIds = new Set(currentIds);
+
+        if (newIds.has(item.courseId)) {
+          newIds.delete(item.courseId);
+        } else {
+          newIds.add(item.courseId);
+        }
+
+        return newIds;
+      });
+    }
+  }
+
+  toggleAll() {
+    const currentlyAllSelected = this.isAllSelected();
+
+    this.checkedIds.update(() => {
+      if (currentlyAllSelected) {
+        return new Set<string>();
+      } else {
+        const items = this.cartService.cartItems();
+        return new Set<string>(items.map((i) => i.courseId));
+      }
+    });
   }
 }

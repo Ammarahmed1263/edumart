@@ -27,6 +27,7 @@ export interface SessionData {
   totalAmount: number;
   currency: string;
   items: string[];
+  courseIds: string[];
   totalDetails?: {
     amount_discount?: number;
     amount_tax?: number;

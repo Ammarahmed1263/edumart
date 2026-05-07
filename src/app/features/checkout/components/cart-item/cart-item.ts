@@ -12,10 +12,16 @@ import { OrderItem } from '../../models/checkout.types';
 export class CartItem {
   item = input.required<OrderItem>();
   index = input.required<number>();
+  isChecked = input<boolean>(true);
 
   remove = output<number>();
+  toggleCheck = output<number>();
 
   onRemove() {
     this.remove.emit(this.index());
+  }
+
+  onToggleCheck() {
+    this.toggleCheck.emit(this.index());
   }
 }
