@@ -374,6 +374,13 @@ button.valid-btn::after {
     border-color: rgba(255, 255, 255, 0.3);
   }
 
+  .input-wrapper input:focus {
+    border-color: #0d5ef4;
+    color: #0d5ef4;
+    background: #fff;
+    box-shadow: 0 0 0 3.5px rgba(13, 94, 244, 0.15);
+  }
+
   .input-wrapper input::placeholder {
     color: rgba(255, 255, 255, 0.55);
   }

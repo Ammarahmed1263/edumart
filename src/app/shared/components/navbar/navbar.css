@@ -70,6 +70,12 @@
   gap: 32px;
 }
 
+.auth-btns {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
 .desktop-only {
     display: flex;
 }
