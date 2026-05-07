@@ -118,6 +118,16 @@
   color: #0d5ef4;
 }
 
+.meta-item.rating i {
+    color: #f59e0b;
+    margin-right: 2px;
+}
+
+.rating-val {
+    color: #1e293b;
+    font-weight: 800;
+}
+
 .review-count {
     color: #94a3b8;
     font-size: 0.75rem;

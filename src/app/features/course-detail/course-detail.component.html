@@ -1,190 +1,251 @@
-<div class="course-detail-container">
+<div class="course-detail-wrapper" [class.is-loading]="isLoading()">
   @if (isLoading()) {
-    <div class="loading-state">
-      <div class="spinner"></div>
-      <p>Loading course details...</p>
+    <div class="premium-loader">
+      <div class="loader-ripple"></div>
+      <p>Curating your experience...</p>
     </div>
   } @else if (course()) {
-    <!-- 1. Immersive Header -->
-    <header class="course-header-banner">
-      <div class="container">
-        <nav class="breadcrumb">
-          <a routerLink="/courses">Courses</a>
-          <i class="fa-solid fa-chevron-right"></i>
-          <span>{{ course()!.category.name }}</span>
-        </nav>
-        
-        <div class="header-content">
-          <h1 class="course-title">{{ course()!.title }}</h1>
-          <p class="course-headline">{{ course()!.description }}</p>
+    <!-- 1. Split Hero Section -->
+    <section class="split-hero">
+      <div class="hero-bg-overlay"></div>
+      <div class="container hero-container">
+        <div class="hero-content-side">
+          <nav class="premium-breadcrumb">
+            <a routerLink="/courses">Catalog</a>
+            <span class="sep">/</span>
+            <span class="active">{{ course()!.category.name }}</span>
+          </nav>
           
-          <div class="header-meta">
-            <div class="meta-item">
-              <span class="label">Created by</span>
-              <span class="value">{{ course()!.instructor.userName }}</span>
+          <h1 class="hero-title">{{ course()!.title }}</h1>
+          <p class="hero-tagline">{{ course()!.description }}</p>
+          
+          <div class="hero-stats-row">
+            <div class="stat">
+              <i class="fa-solid fa-star"></i>
+              <span>{{ course()!.averageRating || 0 }} ({{ course()!.numReviews || 0 }} ratings)</span>
+            </div>
+            <div class="stat">
+              <i class="fa-solid fa-users"></i>
+              <span>{{ (course()!.price * 7).toFixed(0) }} Students</span>
+            </div>
+            <div class="stat">
+              <i class="fa-solid fa-globe"></i>
+              <span>English, Arabic</span>
+            </div>
+          </div>
+
+          <div class="instructor-preview">
+            <div class="avatar-wrapper">
+              <div class="avatar">{{ course()!.instructor.userName.charAt(0) }}</div>
+              <div class="verified-badge"><i class="fa-solid fa-check"></i></div>
+            </div>
+            <div class="instr-info">
+              <span class="label">Course Instructor</span>
+              <span class="name">{{ course()!.instructor.userName }} <i class="fa-solid fa-circle-check verified-icon"></i></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-action-side">
+          <div class="glass-action-card">
+            <div class="preview-media">
+              <img [src]="getCourseImage(course()!)" [alt]="course()!.title" />
+              <button class="play-btn"><i class="fa-solid fa-play"></i></button>
+            </div>
+            
+            <div class="card-content">
+              <div class="price-section">
+                <span class="currency">$</span>
+                <span class="amount">{{ course()!.price }}</span>
+                <span class="original">$199.99</span>
+                <span class="badge">80% OFF</span>
+              </div>
+
+              <div class="main-actions">
+                <button 
+                  class="btn-primary-gradient" 
+                  [disabled]="enrolledCourseIds().has(course()!._id)"
+                  (click)="addToCart()"
+                >
+                  @if (enrolledCourseIds().has(course()!._id)) {
+                    <i class="fa-solid fa-circle-check"></i> Already Enrolled
+                  } @else if (isCourseInCart()) {
+                    <i class="fa-solid fa-cart-shopping"></i> In Cart
+                  } @else {
+                    Enrol Now <i class="fa-solid fa-arrow-right"></i>
+                  }
+                </button>
+                
+                @if (isCourseInCart() && !enrolledCourseIds().has(course()!._id)) {
+                  <a routerLink="/checkout" class="btn-outline-glass">Checkout Now</a>
+                }
+              </div>
+
+              <p class="guarantee"><i class="fa-solid fa-shield-halved"></i> 30-Day Money-Back Guarantee</p>
             </div>
           </div>
         </div>
       </div>
-    </header>
+    </section>
 
-    <div class="container main-layout">
-      <!-- 2. Main Content (Left) -->
-      <main class="content-area">
-        <section class="content-section">
-          <h2 class="section-title">What you'll learn</h2>
-          <div class="description-text">
-            {{ course()!.description }}
-          </div>
-        </section>
+    <div class="container secondary-layout">
+      <!-- 2. Bento Grid Features -->
+      <section class="bento-grid-section">
+        <div class="bento-card large master-card">
+          <div class="card-glow"></div>
+          <h3>What you'll master</h3>
+          <ul class="learning-list">
+            <li><i class="fa-solid fa-check-double"></i> Comprehensive foundations of {{ course()!.title }}</li>
+            <li><i class="fa-solid fa-check-double"></i> Advanced industry-standard best practices</li>
+            <li><i class="fa-solid fa-check-double"></i> Real-world projects and practical implementations</li>
+            <li><i class="fa-solid fa-check-double"></i> Professional workflow and optimization techniques</li>
+          </ul>
+        </div>
+        
+        <div class="bento-card accent">
+          <div class="icon-box"><i class="fa-solid fa-clock-rotate-left"></i></div>
+          <h4>Full Lifetime Access</h4>
+          <p>Learn at your own pace with no deadlines.</p>
+        </div>
 
-        <section class="content-section">
-          <div class="section-header-flex">
-            <h2 class="section-title">Course Content</h2>
-            <span class="lesson-count">{{ lessons().length }} lessons</span>
-          </div>
+        <div class="bento-card cert-card">
+          <div class="icon-box"><i class="fa-solid fa-award"></i></div>
+          <h4>Professional Certificate</h4>
+          <p>Verified professional certificate on completion.</p>
+        </div>
 
+        <div class="bento-card highlight">
+          <div class="icon-box"><i class="fa-solid fa-layer-group"></i></div>
+          <h4>{{ (lessons() && lessons().length > 0) ? lessons().length : 5 }} Modules</h4>
+          <p>High-quality video lessons and source code.</p>
+        </div>
+      </section>
+
+      <!-- 3. Curriculum Section -->
+      <section class="curriculum-section">
+        <div class="section-header">
+          <h2>Course Curriculum</h2>
+          <p>Structured learning path for maximum retention.</p>
+        </div>
+
+        <div class="modern-lessons-list">
           @if (lessons().length > 0) {
-            <div class="lessons-grid">
-              @for (lesson of lessons(); track lesson._id; let index = $index) {
-                <div class="lesson-card">
-                  <div class="lesson-index">{{ index + 1 }}</div>
-                  <div class="lesson-info">
-                    <h3>{{ lesson.title }}</h3>
-                    <p>Standard Lesson Content</p>
-                  </div>
-                  <div class="lesson-status">
-                    <i class="fa-solid fa-circle-play"></i>
-                  </div>
+            @for (lesson of lessons(); track lesson._id; let idx = $index) {
+              <div class="lesson-row" [style.--delay]="idx">
+                <div class="num">{{ (idx + 1).toString().padStart(2, '0') }}</div>
+                <div class="info">
+                  <h4>{{ lesson.title }}</h4>
+                  <p>Advanced practical implementation and theory.</p>
                 </div>
-              }
-            </div>
+                <div class="meta">
+                  <span class="duration">12:45</span>
+                  <i class="fa-solid fa-circle-play"></i>
+                </div>
+              </div>
+            }
           } @else {
-            <div class="empty-notif">
-              <i class="fa-solid fa-lock"></i>
-              <p>{{ lessonsMessage() || 'Enroll to see full course content.' }}</p>
-            </div>
-          }
-        </section>
-
-        <section class="content-section reviews-section">
-          <h2 class="section-title">Student Feedback</h2>
-          
-          @if (enrolledCourseIds().has(course()!._id)) {
-            <div class="review-box">
-              <h3>Share your experience</h3>
-              <div class="review-input-group">
-                <div class="rating-select">
-                  <label>Your Rating:</label>
-                  <div class="stars-input">
-                    @for (star of [1,2,3,4,5]; track star) {
-                      <i class="fa-solid fa-star" 
-                         [class.active]="star <= (hoverRating() || newReview.rating)"
-                         (mouseenter)="hoverRating.set(star)"
-                         (mouseleave)="hoverRating.set(0)"
-                         (click)="newReview.rating = star"></i>
-                    }
-                  </div>
-                  <span class="rating-text">{{ newReview.rating }} / 5</span>
+            <div class="premium-locked-curriculum">
+              <div class="lock-overlay">
+                <div class="lock-circle">
+                  <i class="fa-solid fa-lock"></i>
                 </div>
-
-                <textarea 
-                  [(ngModel)]="newReview.comment" 
-                  placeholder="Tell others what you think..."
-                ></textarea>
-                <button 
-                  class="submit-btn-primary" 
-                  (click)="submitReview()"
-                  [disabled]="isSubmittingReview() || !newReview.comment.trim()"
-                >
-                  Post Review
-                </button>
+                <h3>Course Content Locked</h3>
+                <p>Join this course to access all {{ lessons().length || 10 }} modules and start your journey.</p>
+              </div>
+              
+              <!-- Dummy Blurry Lessons for Preview -->
+              <div class="blurry-preview">
+                @for (i of [1,2,3]; track i) {
+                  <div class="dummy-lesson">
+                    <div class="d-num">0{{i}}</div>
+                    <div class="d-info">
+                      <div class="d-title"></div>
+                      <div class="d-desc"></div>
+                    </div>
+                  </div>
+                }
               </div>
             </div>
           }
+        </div>
+      </section>
 
-          @if (reviews().length > 0) {
-            <div class="reviews-grid">
-              @for (review of reviews(); track review._id) {
-                <div class="user-review">
-                  <div class="review-avatar">
-                    {{ review.student.userName.charAt(0) }}
-                  </div>
-                  <div class="review-body">
-                    <div class="review-user-info">
-                      <strong>{{ review.student.userName }}</strong>
-                      <div class="stars">
-                        @for (i of [1,2,3,4,5]; track i) {
-                          <i class="fa-solid fa-star" [class.active]="i <= review.rating"></i>
-                        }
-                      </div>
-                    </div>
-                    <p>{{ review.comment }}</p>
-                  </div>
-                </div>
-              }
-            </div>
-          } @else {
-            <p class="no-reviews">No reviews for this course yet.</p>
-          }
-        </section>
-      </main>
-
-      <!-- 3. Sidebar (Right) -->
-      <aside class="sidebar-area">
-        <div class="sticky-card">
-          <div class="preview-img">
-            <img [src]="getCourseImage(course()!)" [alt]="course()!.title" />
-            <div class="overlay">
-              <i class="fa-solid fa-play"></i>
-              <span>Preview this course</span>
-            </div>
-          </div>
-
-          <div class="card-body">
-            <div class="price-tag">
-              <span class="current-price">{{ course()!.price | currency }}</span>
-            </div>
-
-            <div class="purchase-actions">
-              <button 
-                class="main-action-btn" 
-                [class.secondary]="isCourseInCart() || enrolledCourseIds().has(course()!._id)" 
-                [disabled]="enrolledCourseIds().has(course()!._id)"
-                (click)="addToCart()"
-              >
-                @if (enrolledCourseIds().has(course()!._id)) {
-                  Already Enrolled
-                } @else if (isCourseInCart()) {
-                  In your Cart
-                } @else {
-                  Add to Cart
+      <!-- 4. Reviews Section -->
+      <section class="premium-reviews">
+        <div class="section-header">
+          <h2>Student Experiences</h2>
+          <div class="avg-stats">
+            <span class="score">{{ course()!.averageRating || 0 }}</span>
+            <div class="stats-meta">
+              <div class="stars">
+                @for (i of [1,2,3,4,5]; track i) {
+                  @if (i <= course()!.averageRating) {
+                    <i class="fa-solid fa-star active"></i>
+                  } @else if (i - 0.5 <= course()!.averageRating) {
+                    <i class="fa-solid fa-star-half-stroke active"></i>
+                  } @else {
+                    <i class="fa-regular fa-star"></i>
+                  }
                 }
-              </button>
-
-              <a class="checkout-link" routerLink="/checkout" *if="isCourseInCart() && !enrolledCourseIds().has(course()!._id)">
-                Go to Checkout
-              </a>
-            </div>
-
-            <div class="course-features">
-              <h4>This course includes:</h4>
-              <ul>
-                <li><i class="fa-solid fa-video"></i> {{ lessons().length }} lessons</li>
-                <li><i class="fa-solid fa-infinity"></i> Full lifetime access</li>
-                <li><i class="fa-solid fa-mobile-screen"></i> Access on mobile and TV</li>
-                <li><i class="fa-solid fa-certificate"></i> Certificate of completion</li>
-              </ul>
+              </div>
+              <span class="count">Based on {{ course()!.numReviews || 0 }} reviews</span>
             </div>
           </div>
         </div>
-      </aside>
+
+        @if (enrolledCourseIds().has(course()!._id)) {
+          <div class="review-input-card">
+            <h4>Leave a review</h4>
+            <div class="stars-selector">
+              @for (star of [1,2,3,4,5]; track star) {
+                <i class="fa-solid fa-star" 
+                   [class.active]="star <= (hoverRating() || newReview.rating)"
+                   (mouseenter)="hoverRating.set(star)"
+                   (mouseleave)="hoverRating.set(0)"
+                   (click)="newReview.rating = star"></i>
+              }
+            </div>
+            <textarea [(ngModel)]="newReview.comment" placeholder="Your feedback matters... (Optional)"></textarea>
+            <button class="btn-primary-gradient" (click)="submitReview()" [disabled]="isSubmittingReview() || !newReview.rating">
+              Submit Review
+            </button>
+          </div>
+        }
+
+        <div class="reviews-masonry">
+          @for (review of reviews(); track review._id) {
+            <div class="review-card">
+              <div class="user">
+                <div class="u-avatar">{{ review.student.userName.charAt(0) }}</div>
+                <div class="u-meta">
+                  <strong>{{ review.student.userName }}</strong>
+                  <div class="u-stars">
+                    @for (i of [1,2,3,4,5]; track i) {
+                      @if (i <= review.rating) {
+                        <i class="fa-solid fa-star active"></i>
+                      } @else {
+                        <i class="fa-regular fa-star"></i>
+                      }
+                    }
+                  </div>
+                </div>
+              </div>
+              <p class="comment">"{{ review.comment }}"</p>
+            </div>
+          } @empty {
+            <div class="empty-reviews">
+              <p>No reviews yet. Be the first to share your journey!</p>
+            </div>
+          }
+        </div>
+      </section>
     </div>
   } @else if (errorMessage()) {
-    <div class="error-container">
-      <i class="fa-solid fa-circle-exclamation"></i>
+    <div class="premium-error">
+      <i class="fa-solid fa-compass"></i>
+      <h2>Course not found</h2>
       <p>{{ errorMessage() }}</p>
-      <a routerLink="/courses" class="back-btn">Go back to Courses</a>
+      <a routerLink="/courses" class="btn-primary-gradient">Back to Catalog</a>
     </div>
   }
 </div>

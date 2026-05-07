@@ -1,14 +1,15 @@
-import { CurrencyPipe } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { CartService } from '../../core/services/cart.service';
 import { CourseService } from '../../core/services/course.service';
+import { ToastService } from '../../core/services/toast.service';
 import { Course, Lesson, Review } from '../../core/models/course.model';
 
 @Component({
     selector: 'app-course-detail',
     standalone: true,
-    imports: [CurrencyPipe, RouterLink],
+    imports: [RouterLink, FormsModule],
     templateUrl: './course-detail.component.html',
     styleUrl: './course-detail.component.css',
 })
@@ -16,13 +17,23 @@ export class CourseDetailComponent {
     private route = inject(ActivatedRoute);
     private courseService = inject(CourseService);
     private cartService = inject(CartService);
+    private toast = inject(ToastService);
 
     course = signal<Course | null>(null);
     reviews = signal<Review[]>([]);
     lessons = signal<Lesson[]>([]);
 
     isLoading = signal<boolean>(false);
+    isSubmittingReview = signal<boolean>(false);
     enrolledCourseIds = signal<Set<string>>(new Set());
+    hoverRating = signal<number>(0);
+    
+    newReview = {
+        rating: 5,
+        comment: ''
+    };
+
+
 
 
     errorMessage = signal<string | null>(null);
@@ -52,8 +63,10 @@ export class CourseDetailComponent {
         });
     }
 
-    loadCourseDetails(courseId: string): void {
-        this.isLoading.set(true);
+    loadCourseDetails(courseId: string, silent: boolean = false): void {
+        if (!silent) {
+            this.isLoading.set(true);
+        }
         this.errorMessage.set(null);
 
         this.courseService.getCourseById(courseId).subscribe({
@@ -86,9 +99,6 @@ export class CourseDetailComponent {
             },
             error: () => {
                 this.lessons.set([]);
-                this.lessonsMessage.set(
-                    'Lessons preview is not available. Lessons may be unlocked after enrollment.'
-                );
             },
         });
     }
@@ -131,5 +141,28 @@ export class CourseDetailComponent {
     getCourseImage(course: Course): string {
         return course.image || 'assets/download.webp';
     }
+
+    submitReview(): void {
+        const selectedCourse = this.course();
+        if (!selectedCourse) return;
+
+        this.isSubmittingReview.set(true);
+
+        this.courseService
+            .addReview(selectedCourse._id, this.newReview.rating, this.newReview.comment)
+            .subscribe({
+                next: () => {
+                    this.toast.success('Review submitted successfully!');
+                    this.newReview = { rating: 5, comment: '' };
+                    this.isSubmittingReview.set(false);
+                    this.loadCourseReviews(selectedCourse._id);
+                    this.loadCourseDetails(selectedCourse._id, true);
+                },
+                error: (err) => {
+                    this.isSubmittingReview.set(false);
+                },
+            });
+    }
 }
+
 

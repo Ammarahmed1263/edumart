@@ -17,10 +17,11 @@ export interface Course {
   title: string;
   description: string;
   price: number;
-  //will need image for course cards
   image: string;
   category: Category;
   instructor: Instructor;
+  averageRating: number;
+  numReviews: number;
   createdAt?: string;
   updatedAt?: string;
 }

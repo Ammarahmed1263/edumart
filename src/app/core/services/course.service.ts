@@ -49,6 +49,14 @@ export class CourseService {
   getMyCourses(): Observable<MyCoursesResponse> {
     return this.http.get<MyCoursesResponse>(`${this.apiUrl}/enrollments/my-courses`);
   }
+
+  addReview(courseId: string, rating: number, comment: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/courses/${courseId}/reviews`, {
+      rating,
+      comment,
+    });
+  }
 }
+
 
 
