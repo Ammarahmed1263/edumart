@@ -390,14 +390,14 @@ button.valid-btn::after {
     color: rgba(255, 255, 255, 0.9);
   }
 
-  button {
-    background: #fff;
-    color: #0d5ef4;
+  ::ng-deep button {
+    background: #fff !important;
+    color: #0d5ef4 !important;
     box-shadow: none;
   }
 
-  button::before,
-  button::after {
-    background: rgba(13, 94, 244, 0.12);
+  ::ng-deep button::before,
+  ::ng-deep button::after {
+    background: rgba(13, 94, 244, 0.12) !important;
   }
 }
