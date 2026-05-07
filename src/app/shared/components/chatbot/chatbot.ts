@@ -1,11 +1,12 @@
 import { Component, signal, ElementRef, ViewChild, inject, effect, HostListener } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ChatService } from '../../../core/services/chat.service';
+import { MarkdownPipe } from '../../pipes/markdown.pipe';
 
 @Component({
   selector: 'app-chatbot',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, MarkdownPipe],
   templateUrl: './chatbot.html',
   styleUrl: './chatbot.css',
 })
@@ -26,13 +27,26 @@ export class ChatbotComponent {
   userInput = '';
 
   constructor() {
-    // This effect runs whenever messages or isLoading signals change
+    let shouldLoad = true;
+    const navEntries = performance.getEntriesByType('navigation');
+    if (navEntries.length > 0 && (navEntries[0] as PerformanceNavigationTiming).type === 'reload') {
+      sessionStorage.removeItem('chat_is_open');
+      shouldLoad = false;
+    }
+
+    if (shouldLoad) {
+      const savedIsOpen = sessionStorage.getItem('chat_is_open');
+      if (savedIsOpen === 'true') {
+        this.isOpen.set(true);
+      }
+    }
+
     effect(() => {
       this.chatService.messages();
       this.chatService.isLoading();
-      this.isOpen();
+      
+      sessionStorage.setItem('chat_is_open', String(this.isOpen()));
 
-      // We still use setTimeout to wait for the DOM render cycle
       setTimeout(() => this.scrollToBottom(), 50);
     });
   }

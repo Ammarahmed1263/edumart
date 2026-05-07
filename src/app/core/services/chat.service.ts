@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, effect } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 
@@ -16,11 +16,33 @@ export class ChatService {
   ]);
   isLoading = signal<boolean>(false);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    let shouldLoad = true;
+    
+    const navEntries = performance.getEntriesByType('navigation');
+    if (navEntries.length > 0 && (navEntries[0] as PerformanceNavigationTiming).type === 'reload') {
+      sessionStorage.removeItem('chat_history');
+      shouldLoad = false;
+    }
+
+    if (shouldLoad) {
+      const saved = sessionStorage.getItem('chat_history');
+      if (saved) {
+        try {
+          this.messages.set(JSON.parse(saved));
+        } catch (e) {
+          console.error('Failed to parse chat history', e);
+        }
+      }
+    }
+
+    effect(() => {
+      sessionStorage.setItem('chat_history', JSON.stringify(this.messages()));
+    });
+  }
 
   sendMessage(content: string) {
     const userMessage: ChatMessage = { role: 'user', content };
-    // Update local messages immediately so the user sees their message while waiting
     this.messages.update((prev) => [...prev, userMessage]);
     this.isLoading.set(true);
 
@@ -28,7 +50,7 @@ export class ChatService {
       message: content,
       history: this.messages()
         .filter((m) => m.content !== 'Hello! How can I help you today?')
-        .slice(0, -1) // Exclude the message we just added since 'message' is sent separately
+        .slice(0, -1)
         .map((m) => ({
           role: m.role,
           content: m.content,
@@ -37,10 +59,7 @@ export class ChatService {
 
     this.http.post<any>(`${environment.apiUrl}/chatbot/chat`, body).subscribe({
       next: (res) => {
-        // Based on the controller: res.status === 'success' and data is in res.data
         if (res.status === 'success' && res.data.history) {
-          // The backend returns the full conversation history including the new user message and assistant reply
-          // We can map the roles to match our interface if necessary
           const newHistory: ChatMessage[] = res.data.history.map((m: any) => ({
             role: m.role,
             content: m.content,

@@ -65,6 +65,8 @@ export class AuthService {
   }
 
   logout() {
+    sessionStorage.removeItem('chat_history');
+    sessionStorage.removeItem('chat_is_open');
     this.setAuthState(null, null);
   }
 

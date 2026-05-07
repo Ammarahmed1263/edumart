@@ -43,9 +43,7 @@
       <div class="chat-messages" #scrollMe>
         @for (msg of chatService.messages(); track $index) {
           <div [class]="'message ' + msg.role">
-            <div class="message-content">
-              {{ msg.content }}
-            </div>
+            <div class="message-content" [innerHTML]="msg.content | markdown"></div>
           </div>
         }
         @if (chatService.isLoading()) {
