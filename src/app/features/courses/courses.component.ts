@@ -126,6 +126,10 @@ export class CoursesComponent {
     this.searchTerm.set(value);
   }
 
+  clearSearch(): void {
+    this.searchTerm.set('');
+  }
+
   isCourseInCart(courseId: string): boolean {
     return this.cartService.isInCart(courseId);
   }

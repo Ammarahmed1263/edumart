@@ -17,7 +17,20 @@ export class Categories {
   isLoading = signal<boolean>(false);
   errorMessage = signal<string | null>(null);
 
-  accentColors = ['#0d5ef4', '#14b8a6', '#f97316', '#8b5cf6', '#22c55e', '#ec4899'];
+  accentColors = ['#6366f1', '#14b8a6', '#f97316', '#8b5cf6', '#10b981', '#f43f5e', '#0ea5e9', '#d946ef'];
+
+  getCategoryIcon(name: string): string {
+    const n = name.toLowerCase();
+    if (n.includes('web') || n.includes('coding') || n.includes('development')) return 'fa-code';
+    if (n.includes('design') || n.includes('art') || n.includes('creative')) return 'fa-palette';
+    if (n.includes('business') || n.includes('finance') || n.includes('management')) return 'fa-briefcase';
+    if (n.includes('marketing') || n.includes('social')) return 'fa-bullhorn';
+    if (n.includes('data') || n.includes('science') || n.includes('ai')) return 'fa-microchip';
+    if (n.includes('photo') || n.includes('video')) return 'fa-camera';
+    if (n.includes('music') || n.includes('audio')) return 'fa-music';
+    if (n.includes('health') || n.includes('fitness')) return 'fa-heart-pulse';
+    return 'fa-layer-group';
+  }
 
   ngOnInit(): void {
     this.loadCategories();

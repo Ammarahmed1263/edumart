@@ -19,25 +19,36 @@
       @if (categories().length === 0) {
         <div class="categories-message">No categories found.</div>
       } @else {
-        <div class="category-grid">
-          @for (category of categories(); track category._id; let i = $index) {
-            <a
-              class="category-card"
-              routerLink="/courses"
-              [queryParams]="{ category: category._id }"
-              [style.--accent]="accentColors[i % accentColors.length]"
-            >
-              <div class="icon">
-                <span>{{ category.name.slice(0, 2) | uppercase }}</span>
-              </div>
-              <div>
-                <h4>{{ category.name }}</h4>
-                <p>{{ category.description || 'Explore curated courses in this track.' }}</p>
-              </div>
-              <span class="meta">Browse courses</span>
-            </a>
-          }
-        </div>
+    <div class="marquee-container">
+      <div class="marquee-track">
+        @for (category of categories(); track category._id; let i = $index) {
+          <a
+            class="category-item"
+            routerLink="/courses"
+            [queryParams]="{ category: category._id }"
+            [style.--accent]="accentColors[i % accentColors.length]"
+          >
+            <div class="icon-circle">
+              <i class="fa-solid" [class]="getCategoryIcon(category.name)"></i>
+            </div>
+            <span class="category-name">{{ category.name }}</span>
+          </a>
+        }
+        @for (category of categories(); track 'dup-' + category._id; let i = $index) {
+          <a
+            class="category-item"
+            routerLink="/courses"
+            [queryParams]="{ category: category._id }"
+            [style.--accent]="accentColors[i % accentColors.length]"
+          >
+            <div class="icon-circle">
+              <i class="fa-solid" [class]="getCategoryIcon(category.name)"></i>
+            </div>
+            <span class="category-name">{{ category.name }}</span>
+          </a>
+        }
+      </div>
+    </div>
       }
     }
   </div>

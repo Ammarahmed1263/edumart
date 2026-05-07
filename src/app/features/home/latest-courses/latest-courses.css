@@ -5,7 +5,6 @@
   overflow: hidden;
 }
 
-/* Decorative elements */
 .popular-courses-section::before {
   content: '';
   position: absolute;
@@ -86,6 +85,16 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   gap: 30px;
+  align-items: stretch;
+}
+
+.course-item {
+    display: flex;
+}
+
+app-course-card {
+    width: 100%;
+    display: flex;
 }
 
 @media (max-width: 768px) {
