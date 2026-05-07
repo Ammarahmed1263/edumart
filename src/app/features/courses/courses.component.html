@@ -1,77 +1,103 @@
 <section class="courses-page">
-  <div class="courses-header">
-    <div>
-      <p class="eyebrow">Start learning today</p>
-      <h1>Explore Courses</h1>
-      <p class="subtitle">
-        Browse available courses, filter by category, and add your favorite courses to the cart.
-      </p>
+  <!-- Compact Header Section -->
+  <div class="hero-section compact">
+    <div class="hero-content">
+      <div class="header-flex">
+        <h1>Explore <span class="gradient-text">Expert Courses</span></h1>
+        
+        <div class="search-container">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input 
+            type="text" 
+            placeholder="Search for courses..." 
+            (input)="onSearch($event)"
+            [value]="searchTerm()"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="hero-visual">
+        <div class="abstract-shape shape-1"></div>
     </div>
   </div>
 
   @if (successMessage()) {
-    <div class="success-message">
+    <div class="floating-alert success">
+      <i class="fa-solid fa-circle-check"></i>
       {{ successMessage() }}
     </div>
   }
 
-  @if (errorMessage()) {
-    <div class="error-message">
-      {{ errorMessage() }}
-    </div>
-  }
+  <div class="main-layout">
+    <!-- Sidebar Filters -->
+    <aside class="filters-sidebar">
+      <div class="filter-group">
+        <h3>Categories</h3>
+        <div class="category-list">
+          <button
+            class="filter-link"
+            [class.active]="selectedCategoryId() === ''"
+            (click)="showAllCourses()"
+          >
+            <i class="fa-solid fa-layer-group"></i> All Courses
+          </button>
 
-  <div class="search-section">
-    <div class="search-container">
-      <i class="fa-solid fa-magnifying-glass"></i>
-      <input 
-        type="text" 
-        placeholder="Search for courses, topics, or instructors..." 
-        (input)="onSearch($event)"
-        [value]="searchTerm()"
-      />
-    </div>
-  </div>
-
-  <div class="categories-section">
-    <button
-      class="category-btn"
-      [class.active]="selectedCategoryId() === ''"
-      (click)="showAllCourses()"
-    >
-      All
-    </button>
-
-    @for (category of categories(); track category._id) {
-      <button
-        class="category-btn"
-        [class.active]="selectedCategoryId() === category._id"
-        (click)="filterByCategory(category._id)"
-      >
-        {{ category.name }}
-      </button>
-    }
-  </div>
-
-  @if (isLoading()) {
-    <app-loading text="Loading courses..."></app-loading>
-  } @else {
-    @if (courses().length === 0) {
-      <div class="empty-state">No courses found in this category.</div>
-    } @else if (filteredCourses().length === 0) {
-      <div class="empty-state">No results found for "{{ searchTerm() }}".</div>
-    } @else {
-      <div class="courses-grid">
-        @for (course of filteredCourses(); track course._id) {
-          <app-course-card
-            [course]="course"
-            [isInCart]="isCourseInCart(course._id)"
-            [isEnrolled]="enrolledCourseIds().has(course._id)"
-            (addToCart)="addToCart($event)"
-          ></app-course-card>
-        }
+          @for (category of categories(); track category._id) {
+            <button
+              class="filter-link"
+              [class.active]="selectedCategoryId() === category._id"
+              (click)="filterByCategory(category._id)"
+            >
+              <i class="fa-solid fa-tag"></i> {{ category.name }}
+            </button>
+          }
+        </div>
       </div>
-    }
-  }
+      
+      <div class="promo-card">
+        <h4>Get 20% Off!</h4>
+        <p>On your first enrollment this month.</p>
+        <button class="promo-btn">View Offers</button>
+      </div>
+    </aside>
 
+    <!-- Main Content -->
+    <main class="courses-content">
+      <div class="content-header">
+        <div class="results-count">
+          Showing <strong>{{ filteredCourses().length }}</strong> courses
+        </div>
+      </div>
+
+      @if (isLoading()) {
+        <div class="loading-container">
+            <app-loading text="Curating the best courses for you..."></app-loading>
+        </div>
+      } @else {
+        @if (courses().length === 0) {
+          <div class="empty-state">
+            <i class="fa-solid fa-box-open"></i>
+            <p>No courses found in this category.</p>
+          </div>
+        } @else if (filteredCourses().length === 0) {
+          <div class="empty-state">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <p>No results found for "<strong>{{ searchTerm() }}</strong>".</p>
+            <button (click)="clearSearch()" class="clear-btn">Clear Search</button>
+          </div>
+        } @else {
+          <div class="courses-grid">
+            @for (course of filteredCourses(); track course._id) {
+              <app-course-card
+                [course]="course"
+                [isInCart]="isCourseInCart(course._id)"
+                [isEnrolled]="enrolledCourseIds().has(course._id)"
+                (addToCart)="addToCart($event)"
+              ></app-course-card>
+            }
+          </div>
+        }
+      }
+    </main>
+  </div>
 </section>
