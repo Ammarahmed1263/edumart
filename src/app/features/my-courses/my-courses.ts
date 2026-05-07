@@ -20,7 +20,7 @@ export class MyCourses {
   errorMessage = signal<string | null>(null);
 
   user = this.authService.currentUser;
-  userName = computed(() => this.user().user?.userName ?? 'Student');
+  userName = computed(() => this.user().user?.userName ?? 'User');
   userEmail = computed(() => this.user().user?.email ?? '');
   userInitials = computed(() => this.getUserInitials());
 
