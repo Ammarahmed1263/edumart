@@ -18,8 +18,10 @@ export class CourseService {
   private http = inject(HttpClient);
   private apiUrl = environment.apiUrl;
 
-  getCourses(categoryId?: string): Observable<CoursesResponse> {
-    let params = new HttpParams();
+  getCourses(categoryId?: string, page: number = 1, limit: number = 8): Observable<CoursesResponse> {
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('limit', limit.toString());
 
     if (categoryId) {
       params = params.set('category', categoryId);

@@ -30,6 +30,10 @@ export class CoursesComponent {
   errorMessage = signal<string | null>(null);
   successMessage = signal<string | null>(null);
   searchTerm = signal<string>('');
+  
+  currentPage = signal<number>(1);
+  totalPages = signal<number>(1);
+  pageSize = 10;
 
   filteredCourses = computed(() => {
     const term = this.searchTerm().toLowerCase().trim();
@@ -51,8 +55,12 @@ export class CoursesComponent {
     }
     this.route.queryParamMap.subscribe((params) => {
       const categoryId = params.get('category') ?? '';
+      const page = +(params.get('page') ?? '1');
+      
       this.selectedCategoryId.set(categoryId);
-      this.loadCourses(categoryId || undefined);
+      this.currentPage.set(page);
+      
+      this.loadCourses(categoryId || undefined, page);
     });
   }
 
@@ -65,13 +73,15 @@ export class CoursesComponent {
     });
   }
 
-  loadCourses(categoryId?: string): void {
+  loadCourses(categoryId?: string, page: number = 1): void {
     this.isLoading.set(true);
     this.errorMessage.set(null);
 
-    this.courseService.getCourses(categoryId).subscribe({
+    this.courseService.getCourses(categoryId, page, this.pageSize).subscribe({
       next: (response) => {
         this.courses.set(response.data.courses);
+        this.totalPages.set(response.data.totalPages);
+        this.currentPage.set(response.data.page);
         this.isLoading.set(false);
       },
       error: () => {
@@ -79,6 +89,18 @@ export class CoursesComponent {
         this.isLoading.set(false);
       },
     });
+  }
+
+  onPageChange(page: number): void {
+    if (page < 1 || page > this.totalPages()) return;
+    
+    this.router.navigate([], {
+      queryParams: { page },
+      queryParamsHandling: 'merge',
+    });
+    
+    // Smooth scroll to top of courses
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   loadCategories(): void {
@@ -94,14 +116,14 @@ export class CoursesComponent {
 
   filterByCategory(categoryId: string): void {
     this.router.navigate([], {
-      queryParams: { category: categoryId },
+      queryParams: { category: categoryId, page: 1 },
       queryParamsHandling: 'merge',
     });
   }
 
   showAllCourses(): void {
     this.router.navigate([], {
-      queryParams: { category: null },
+      queryParams: { category: null, page: 1 },
       queryParamsHandling: 'merge',
     });
   }
