@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { Navbar } from '../navbar/navbar';
-import { Footer } from '../footer/footer';
 import { ChatbotComponent } from '../chatbot/chatbot';
-import { ToastComponent } from '../toast/toast';
+import { Footer } from '../footer/footer';
+import { Navbar } from '../navbar/navbar';
 
+
+import { CartSyncService } from '../../../core/services/cart-sync.service';
 
 @Component({
   selector: 'app-layout',
@@ -12,4 +13,6 @@ import { ToastComponent } from '../toast/toast';
   templateUrl: './layout.html',
   styleUrl: './layout.css',
 })
-export class Layout {}
+export class Layout {
+  private cartSyncService = inject(CartSyncService);
+}

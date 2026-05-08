@@ -9,11 +9,14 @@ import {
   User,
 } from '../models/user.model';
 import { tap } from 'rxjs';
+import { CartService } from './cart.service';
+
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   private http = inject(HttpClient);
+  private cartService = inject(CartService);
   private apiUrl = environment.apiUrl;
   currentUser = signal<{ token: string | null; user: User | null }>({
     token: localStorage.getItem('token'),
@@ -67,6 +70,7 @@ export class AuthService {
   logout() {
     sessionStorage.removeItem('chat_history');
     sessionStorage.removeItem('chat_is_open');
+    this.cartService.clearCart();
     this.setAuthState(null, null);
   }
 

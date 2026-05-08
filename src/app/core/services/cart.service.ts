@@ -66,6 +66,17 @@ export class CartService {
         this.updateCart(updatedItems);
     }
 
+    syncWithEnrollments(enrolledIds: string[]): void {
+        const currentItems = this.cartItemsSignal();
+        const updatedItems = currentItems.filter(
+            (item) => !enrolledIds.includes(item.courseId),
+        );
+
+        if (updatedItems.length !== currentItems.length) {
+            this.updateCart(updatedItems);
+        }
+    }
+
     isInCart(courseId: string): boolean {
         return this.cartItemsSignal().some((item) => item.courseId === courseId);
     }

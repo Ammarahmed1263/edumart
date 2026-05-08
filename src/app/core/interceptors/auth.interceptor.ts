@@ -30,7 +30,12 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
         if (error.status === 401) {
           authService.logout();
-          if (!req.url.includes('/login')) {
+          
+          // Only redirect to login if this wasn't a silent background check failing
+          const isBackgroundSync = req.url.includes('/enrollments/my-courses');
+          const isLessonsCall = req.url.includes('/lessons');
+          
+          if (!req.url.includes('/login') && !isBackgroundSync && !isLessonsCall) {
             router.navigate(['/login'], { replaceUrl: true });
             if (errorMessage === error.message || !errorMessage) {
               errorMessage = 'Session expired. Please login again.';
