@@ -164,6 +164,7 @@
   }
   .empty-state {
     padding: 100px 20px;
+    margin-top: 2rem;
   }
   .empty-state h2 {
     font-size: 24px;

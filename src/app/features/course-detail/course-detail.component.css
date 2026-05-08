@@ -10,6 +10,11 @@
   --radius-md: 12px;
   --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
   --shadow-md: 0 10px 15px -3px rgba(0,0,0,0.05);
+  box-sizing: border-box;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
 }
 
 .course-detail-wrapper {
@@ -272,12 +277,13 @@
 
 /* 2. Structured Bento Grid */
 .secondary-layout {
-  padding: 60px 0 100px;
+  padding-top: 60px;
+  padding-bottom: 100px;
 }
 
 .bento-grid-section {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 20px;
   margin-bottom: 60px;
 }
@@ -538,7 +544,9 @@
 .premium-reviews .section-header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 24px;
   margin-bottom: 48px;
 }
 
@@ -705,21 +713,34 @@
     grid-template-columns: 1fr;
   }
   
+  .hero-title {
+    font-size: 34px;
+  }
+
   .bento-grid-section {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
+  }
+
+  .bento-card.master-card {
+    grid-column: span 1;
+  }
+  
+  .premium-reviews .section-header {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
 
 @media (max-width: 600px) {
-  .bento-grid-section {
-    grid-template-columns: 1fr;
-  }
-  
   .reviews-masonry {
     grid-template-columns: 1fr;
   }
   
   .hero-title {
-    font-size: 32px;
+    font-size: 28px;
+  }
+
+  .hero-action-side {
+    margin-top: -40px;
   }
 }

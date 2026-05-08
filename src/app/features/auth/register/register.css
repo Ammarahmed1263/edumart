@@ -126,6 +126,15 @@ form {
   align-items: center;
 }
 
+.eye-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #9ca3af;
+}
+
 .input-icon {
   position: absolute;
   left: 14px;
@@ -165,7 +174,8 @@ form {
   box-shadow: 0 0 0 3.5px rgba(13, 94, 244, 0.15);
 }
 
-.input-wrapper:focus-within .input-icon {
+.input-wrapper:focus-within .input-icon,
+.input-wrapper:focus-within .eye-icon {
   color: #0d5ef4;
 }
 
@@ -391,8 +401,6 @@ button.valid-btn::after {
   }
 
   ::ng-deep button {
-    background: #fff !important;
-    color: #0d5ef4 !important;
     box-shadow: none;
   }
 
