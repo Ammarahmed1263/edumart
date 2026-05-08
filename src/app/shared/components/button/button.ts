@@ -14,4 +14,5 @@ export class ButtonComponent {
   @Input() isLoading: boolean = false;
   @Input() isDisabled: boolean = false;
   @Input() isValid: boolean | null = false;
+  @Input() className: string = '';
 }
