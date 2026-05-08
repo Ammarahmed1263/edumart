@@ -47,6 +47,26 @@ export class CoursesComponent {
     );
   });
 
+  pages = computed(() => {
+    const total = this.totalPages();
+    const current = this.currentPage();
+    const maxVisible = 5;
+    
+    if (total <= maxVisible) {
+      return Array.from({ length: total }, (_, i) => i + 1);
+    }
+    
+    let start = Math.max(1, current - Math.floor(maxVisible / 2));
+    let end = start + maxVisible - 1;
+    
+    if (end > total) {
+      end = total;
+      start = Math.max(1, end - maxVisible + 1);
+    }
+    
+    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+  });
+
 
   ngOnInit(): void {
     this.loadCategories();
@@ -99,8 +119,13 @@ export class CoursesComponent {
       queryParamsHandling: 'merge',
     });
     
-    // Smooth scroll to top of courses
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Scroll to the courses grid instead of the absolute top for better UX
+    const element = document.querySelector('.courses-content');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   }
 
   loadCategories(): void {

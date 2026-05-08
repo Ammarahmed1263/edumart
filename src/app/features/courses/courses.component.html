@@ -109,14 +109,28 @@
               </button>
 
               <div class="page-numbers">
-                @for (p of [].constructor(totalPages()); track $index) {
+                @if (pages()[0] > 1) {
+                  <button class="page-num" (click)="onPageChange(1)">1</button>
+                  @if (pages()[0] > 2) {
+                    <span class="pagination-ellipsis">...</span>
+                  }
+                }
+
+                @for (p of pages(); track p) {
                   <button 
                     class="page-num" 
-                    [class.active]="currentPage() === $index + 1"
-                    (click)="onPageChange($index + 1)"
+                    [class.active]="currentPage() === p"
+                    (click)="onPageChange(p)"
                   >
-                    {{ $index + 1 }}
+                    {{ p }}
                   </button>
+                }
+
+                @if (pages()[pages().length - 1] < totalPages()) {
+                  @if (pages()[pages().length - 1] < totalPages() - 1) {
+                    <span class="pagination-ellipsis">...</span>
+                  }
+                  <button class="page-num" (click)="onPageChange(totalPages())">{{ totalPages() }}</button>
                 }
               </div>
 
