@@ -129,6 +129,15 @@ form {
   flex-shrink: 0;
 }
 
+.eye-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #9ca3af;
+}
+
 .input-wrapper input {
   width: 100%;
   padding: 13px 16px 13px 44px;
@@ -156,7 +165,8 @@ form {
   box-shadow: 0 0 0 3.5px rgba(13, 94, 244, 0.15);
 }
 
-.input-wrapper:focus-within .input-icon {
+.input-wrapper:focus-within .input-icon,
+.input-wrapper:focus-within .eye-icon {
   color: #0d5ef4;
 }
 
@@ -298,11 +308,11 @@ form {
   }
 
   .input-wrapper input:focus {
-  border-color: #0d5ef4;
-  color: #0d5ef4;
-  background: #fff;
-  box-shadow: 0 0 0 3.5px rgba(13, 94, 244, 0.15);
-}
+    border-color: #0d5ef4;
+    color: #0d5ef4;
+    background: #fff;
+    box-shadow: 0 0 0 3.5px rgba(13, 94, 244, 0.15);
+  }
 
   .input-wrapper input::placeholder {
     color: rgba(255, 255, 255, 0.55);
@@ -314,6 +324,10 @@ form {
   }
 
   ::ng-deep button {
+    box-shadow: none;
+  }
+
+  ::ng-deep .submit-button {
     background: #fff !important;
     color: #0d5ef4 !important;
     box-shadow: none;
