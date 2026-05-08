@@ -6,6 +6,7 @@ import { CartItem } from '../components/cart-item/cart-item';
 import { OrderSummary } from '../components/order-summary/order-summary';
 import { OrderItem } from '../models/checkout.types';
 import { PaymentService } from '../services/payment.service';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-checkout',
@@ -19,6 +20,7 @@ export class Checkout {
   private paymentService = inject(PaymentService);
   private platformId = inject(PLATFORM_ID);
   private cartService = inject(CartService);
+  private authService = inject(AuthService);
 
   readonly cartItems = this.cartService.cartItems;
 
@@ -63,6 +65,11 @@ export class Checkout {
   }
 
   initiateCheckout() {
+    if (!this.authService.isLoggedIn()) {
+      this.router.navigate(['/login'], { queryParams: { returnUrl: '/checkout' } });
+      return;
+    }
+
     const o = this.order();
     if (!o || o.count === 0) return;
 

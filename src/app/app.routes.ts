@@ -24,55 +24,50 @@ export const routes: Routes = [
       { path: '', pathMatch: 'full', component: HomePage },
 
       {
+        path: 'courses',
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import('./features/courses/courses.component').then((c) => c.CoursesComponent),
+          },
+          {
+            path: ':id',
+            loadComponent: () =>
+              import('./features/course-detail/course-detail.component').then(
+                (c) => c.CourseDetailComponent,
+              ),
+          },
+        ],
+      },
+      {
+        path: 'categories',
+        loadComponent: () =>
+          import('./features/categories-page/categories-page').then((c) => c.CategoriesPage),
+      },
+      {
+        path: 'checkout',
+        loadComponent: () =>
+          import('./features/checkout/checkout/checkout').then((c) => c.Checkout),
+      },
+      {
         path: '',
         canActivateChild: [authGuard],
         children: [
-          {
-            path: 'courses',
-            children: [
-              {
-                path: '',
-                loadComponent: () =>
-                  import('./features/courses/courses.component').then((c) => c.CoursesComponent),
-              },
-              {
-                path: ':id',
-                loadComponent: () =>
-                  import('./features/course-detail/course-detail.component').then(
-                    (c) => c.CourseDetailComponent,
-                  ),
-              },
-            ],
-          },
-          {
-            path: 'categories',
-            loadComponent: () =>
-              import('./features/categories-page/categories-page').then((c) => c.CategoriesPage),
-          },
           {
             path: 'my-courses',
             loadComponent: () =>
               import('./features/my-courses/my-courses').then((c) => c.MyCourses),
           },
           {
-            path: 'checkout',
-            children: [
-              {
-                path: '',
-                loadComponent: () =>
-                  import('./features/checkout/checkout/checkout').then((c) => c.Checkout),
-              },
-              {
-                path: 'success',
-                loadComponent: () =>
-                  import('./features/checkout/success/success').then((c) => c.Success),
-              },
-              {
-                path: 'cancel',
-                loadComponent: () =>
-                  import('./features/checkout/cancel/cancel').then((c) => c.Cancel),
-              },
-            ],
+            path: 'checkout/success',
+            loadComponent: () =>
+              import('./features/checkout/success/success').then((c) => c.Success),
+          },
+          {
+            path: 'checkout/cancel',
+            loadComponent: () =>
+              import('./features/checkout/cancel/cancel').then((c) => c.Cancel),
           },
         ],
       },

@@ -69,16 +69,10 @@
                 >
                   @if (enrolledCourseIds().has(course()!._id)) {
                     <i class="fa-solid fa-circle-check"></i> Already Enrolled
-                  } @else if (isCourseInCart()) {
-                    <i class="fa-solid fa-cart-shopping"></i> In Cart
                   } @else {
-                    Enrol Now <i class="fa-solid fa-arrow-right"></i>
+                    Enroll Now <i class="fa-solid fa-arrow-right"></i>
                   }
                 </button>
-                
-                @if (isCourseInCart() && !enrolledCourseIds().has(course()!._id)) {
-                  <a routerLink="/checkout" class="btn-outline-glass">Checkout Now</a>
-                }
               </div>
 
               <p class="guarantee"><i class="fa-solid fa-shield-halved"></i> 30-Day Money-Back Guarantee</p>
@@ -248,4 +242,4 @@
       <a routerLink="/courses" class="btn-primary-gradient">Back to Catalog</a>
     </div>
   }
-</div>
+</div>

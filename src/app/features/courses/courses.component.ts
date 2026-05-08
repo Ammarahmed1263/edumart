@@ -1,5 +1,6 @@
 import { Component, inject, signal, computed } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from '../../core/services/auth.service';
 import { CartService } from '../../core/services/cart.service';
 import { CourseService } from '../../core/services/course.service';
 import { Category, Course } from '../../core/models/course.model';
@@ -18,6 +19,7 @@ export class CoursesComponent {
   private cartService = inject(CartService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private authService = inject(AuthService);
 
   courses = signal<Course[]>([]);
   categories = signal<Category[]>([]);
@@ -44,7 +46,9 @@ export class CoursesComponent {
 
   ngOnInit(): void {
     this.loadCategories();
-    this.loadEnrollments();
+    if (this.authService.isLoggedIn()) {
+      this.loadEnrollments();
+    }
     this.route.queryParamMap.subscribe((params) => {
       const categoryId = params.get('category') ?? '';
       this.selectedCategoryId.set(categoryId);

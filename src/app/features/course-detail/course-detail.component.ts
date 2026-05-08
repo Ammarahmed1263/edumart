@@ -1,9 +1,10 @@
 import { Component, inject, signal } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CartService } from '../../core/services/cart.service';
 import { CourseService } from '../../core/services/course.service';
 import { ToastService } from '../../core/services/toast.service';
+import { AuthService } from '../../core/services/auth.service';
 import { Course, Lesson, Review } from '../../core/models/course.model';
 
 @Component({
@@ -15,9 +16,11 @@ import { Course, Lesson, Review } from '../../core/models/course.model';
 })
 export class CourseDetailComponent {
     private route = inject(ActivatedRoute);
+    private router = inject(Router);
     private courseService = inject(CourseService);
     private cartService = inject(CartService);
     private toast = inject(ToastService);
+    private authService = inject(AuthService);
 
     course = signal<Course | null>(null);
     reviews = signal<Review[]>([]);
@@ -50,8 +53,10 @@ export class CourseDetailComponent {
 
         this.loadCourseDetails(courseId);
         this.loadCourseReviews(courseId);
-        this.loadCourseLessons(courseId);
-        this.loadEnrollments();
+        if (this.authService.isLoggedIn()) {
+          this.loadCourseLessons(courseId);
+          this.loadEnrollments();
+        }
     }
 
     loadEnrollments(): void {
@@ -118,14 +123,10 @@ export class CourseDetailComponent {
         const wasAdded = this.cartService.addToCart(selectedCourse);
 
         if (wasAdded) {
-            this.successMessage.set('Course added to cart successfully.');
-        } else {
-            this.successMessage.set('This course is already in your cart.');
+            this.toast.success('Added to cart!');
         }
-
-        setTimeout(() => {
-            this.successMessage.set(null);
-        }, 2000);
+        
+        this.router.navigate(['/checkout']);
     }
 
     isCourseInCart(): boolean {

@@ -19,13 +19,14 @@
 
     <div class="nav-right">
       <div class="nav-actions">
+        <a routerLink="/checkout" routerLinkActive="active" class="cart-link" title="Shopping Cart" (click)="closeMenu()">
+          <i class="fa-solid fa-cart-shopping"></i>
+          @if (cartService.cartCount() > 0) {
+            <span class="cart-badge">{{ cartService.cartCount() }}</span>
+          }
+        </a>
+
         @if (currentUser().token) {
-          <a routerLink="/checkout" routerLinkActive="active" class="cart-link" title="Shopping Cart" (click)="closeMenu()">
-            <i class="fa-solid fa-cart-shopping"></i>
-            @if (cartService.cartCount() > 0) {
-              <span class="cart-badge">{{ cartService.cartCount() }}</span>
-            }
-          </a>
           
           <div class="user-menu" [class.open]="menuOpen()">
             <button class="user-pill" type="button" (click)="toggleMenu()">
