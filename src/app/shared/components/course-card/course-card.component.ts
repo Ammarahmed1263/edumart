@@ -21,7 +21,8 @@ export class CourseCardComponent {
         this.addToCart.emit(this.course);
     }
 
-    getCourseImage(): string {
-        return this.course.image || 'assets/download.webp';
+    handleImageError(event: Event): void {
+        const imgElement = event.target as HTMLImageElement;
+        imgElement.src = 'https://images.unsplash.com/photo-1497215728101-856f4ea42174?q=80&w=2070&auto=format&fit=crop';
     }
 }

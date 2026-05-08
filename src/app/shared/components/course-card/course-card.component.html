@@ -1,6 +1,11 @@
 <article class="course-card" [routerLink]="['/courses', course._id]">
   <div class="thumbnail-wrapper">
-    <img class="thumbnail" [src]="course.image" [alt]="course.title" />
+    <img 
+      class="thumbnail" 
+      [src]="course.image" 
+      [alt]="course.title" 
+      (error)="handleImageError($event)" 
+    />
     <div class="price-badge">
       {{ course.price | currency }}
     </div>
