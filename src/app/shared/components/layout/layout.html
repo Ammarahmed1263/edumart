@@ -3,5 +3,7 @@
 <main class="main-content">
   <router-outlet />
 </main>
-<app-chatbot />
+@if (showChatbot()) {
+  <app-chatbot />
+}
 <app-footer />

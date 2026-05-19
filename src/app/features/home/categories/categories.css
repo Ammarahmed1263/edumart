@@ -35,6 +35,14 @@
     display: none;
 }
 
+.categories-message {
+    text-align: center;
+    padding: 20px;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-gray-400);
+}
+
 .marquee-container {
   overflow: hidden;
   padding: 20px 0;
